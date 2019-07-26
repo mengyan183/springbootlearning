@@ -1,12 +1,12 @@
 import http from './../../../base/api/public'
+// eslint-disable-next-line no-unused-vars
 import querystring from 'querystring'
 let sysConfig = require('@/../config/sysConfig')
-let apiUrl = sysConfig.xcApiUrlPre;
+let apiUrl = sysConfig.xcApiUrlPre
 
-//页面查询
-export const page_list = (page,size,params) =>{
-  //请求服务端的页面查询接口
-  return http.requestQuickGet(apiUrl+'/cms/page/list/'+page+'/'+size);
+// 页面查询
+// eslint-disable-next-line camelcase
+export const page_list = (page, size, params) => {
+  // 请求服务端的页面查询接口
+  return http.requestQuickGet(apiUrl + '/cms/page/list/' + page + '/' + size)
 }
-
-
