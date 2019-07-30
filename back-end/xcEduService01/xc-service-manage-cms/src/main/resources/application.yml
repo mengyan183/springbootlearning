@@ -7,3 +7,4 @@ spring:
     mongodb:
       uri:  mongodb://localhost:27017
       database: xc_cms
+logging.level.org.springframework.boot.autoconfigure: ERROR
