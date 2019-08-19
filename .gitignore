@@ -88,3 +88,4 @@ gen
 **/node_modules/
 
 **/target/
+**/*.lst
