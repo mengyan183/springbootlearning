@@ -1,6 +1,10 @@
 package com.xuecheng.manage_cms.dao;
 
+import com.alibaba.fastjson.JSON;
 import com.xuecheng.framework.domain.cms.CmsPage;
+import com.xuecheng.framework.domain.cms.response.CmsPageResult;
+import com.xuecheng.manage_cms.service.PageService;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +22,13 @@ import java.util.Optional;
  **/
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@Slf4j
 public class CmsPageRepositoryTest {
 
     @Autowired
     CmsPageRepository cmsPageRepository;
+    @Autowired
+    private PageService pageService;
 
     @Test
     public void testFindAll(){
@@ -93,5 +100,28 @@ public class CmsPageRepositoryTest {
     public void testfindByPageName(){
         CmsPage cmsPage = cmsPageRepository.findByPageName("测试页面");
         System.out.println(cmsPage);
+    }
+
+    @Test
+    public void add(){
+        CmsPage cmsPage = new CmsPage();
+//        cmsPage.setSiteId();
+//        cmsPage.setPageId();
+//        cmsPage.setPageName();
+//        cmsPage.setPageAliase();
+//        cmsPage.setPageWebPath();
+//        cmsPage.setPageParameter();
+//        cmsPage.setPagePhysicalPath();
+//        cmsPage.setPageType();
+//        cmsPage.setPageTemplate();
+//        cmsPage.setPageHtml();
+//        cmsPage.setPageStatus();
+//        cmsPage.setPageCreateTime();
+//        cmsPage.setTemplateId();
+//        cmsPage.setPageParams();
+//        cmsPage.setHtmlFileId();
+//        cmsPage.setDataUrl();
+        CmsPageResult add = pageService.add(cmsPage);
+        log.info(JSON.toJSONString(add));
     }
 }

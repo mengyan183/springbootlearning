@@ -96,18 +96,18 @@ public class PageService {
     public CmsPageResult add(CmsPage cmsPage) {
         if(cmsPage == null){
             //抛出异常，非法参数异常..指定异常信息的内容
-
+            return new CmsPageResult(CommonCode.INVALID_PARAM,cmsPage);
         }
         //校验页面名称、站点Id、页面webpath的唯一性
         //根据页面名称、站点Id、页面webpath去cms_page集合，如果查到说明此页面已经存在，如果查询不到再继续添加
-        CmsPage cmsPage1 = cmsPageRepository.findByPageNameAndSiteIdAndPageWebPath(cmsPage.getPageName(), cmsPage.getSiteId(), cmsPage.getPageWebPath());
-        if(cmsPage1!=null){
+        CmsPage existCmsPage = cmsPageRepository.findByPageNameAndSiteIdAndPageWebPath(cmsPage.getPageName(), cmsPage.getSiteId(), cmsPage.getPageWebPath());
+        if(existCmsPage!=null){
             //页面已经存在
             //抛出异常，异常内容就是页面已经存在
             ExceptionCast.cast(CmsCode.CMS_ADDPAGE_EXISTSNAME);
         }
 
-        //调用dao新增页面
+        //调用dao新增页面 (使用自动生成主键)
         cmsPage.setPageId(null);
         cmsPageRepository.save(cmsPage);
         return new CmsPageResult(CommonCode.SUCCESS,cmsPage);

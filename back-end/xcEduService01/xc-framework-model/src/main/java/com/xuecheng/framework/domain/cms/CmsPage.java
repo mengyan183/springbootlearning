@@ -1,10 +1,12 @@
 package com.xuecheng.framework.domain.cms;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +19,8 @@ import java.util.List;
 @Data
 @ToString
 @Document(collection = "cms_page")
-public class CmsPage {
+public class CmsPage implements Serializable {
+    private static final long serialVersionUID = 7469738088344984103L;
     /**
      * 页面名称、别名、访问地址、类型（静态/动态）、页面模版、状态
      */
