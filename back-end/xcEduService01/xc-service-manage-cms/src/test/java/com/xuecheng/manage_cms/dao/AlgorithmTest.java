@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.util.CollectionUtils;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * AlgorithmTest
@@ -131,11 +128,47 @@ public class AlgorithmTest {
         }
         return -1;
     }
+
+
+    public int numRabbits(int[] answers) {
+        // 回答的值,相同回答值集合
+        HashMap<Integer, List<Integer>> integerIntegerHashMap = new HashMap<>();
+        int minTotalNum = 0;
+        for (int i : answers) {
+            // 如果 其他 的数量 为 0;代表当前颜色 只有 一个 数据
+            if (i == 0) {
+                minTotalNum += 1;
+                continue;
+            }
+            List<Integer> orDefault = integerIntegerHashMap.getOrDefault(i, new ArrayList<>());
+            orDefault.add(i);
+            integerIntegerHashMap.put(i, orDefault);
+        }
+        for (Map.Entry<Integer, List<Integer>> entry : integerIntegerHashMap.entrySet()) {
+            List<Integer> value = entry.getValue();
+            Integer key = entry.getKey();
+            if (value != null && value.size() > 0) {
+                // 相同的回答 可能存在 不同颜色的 兔子;如果  回答的数量 <= 回答的值 + 1 ,则该颜色的数量 为 回答的值 + 1; 反之,则 相同回答中存在 不同颜色的数据
+                int size = value.size();
+                if (size <= (key + 1)) {
+                    minTotalNum += key + 1;
+                } else {
+                    minTotalNum += (key + 1) * (size / (key + 1))+ (size % (key + 1) > 0 ? 1 : 0) * (key + 1);
+                }
+            }
+        }
+        return minTotalNum;
+    }
+
+
+
     @Test
     public void test() {
-        int n = 3;
-        int[][] trust = {{1, 3}, {2, 3}, {3, 1}};
-        int judge = findJudge(n, trust);
-        log.info("{}", judge);
+//        int n = 3;
+//        int[][] trust = {{1, 3}, {2, 3}, {3, 1}};
+//        int judge = findJudge(n, trust);
+//        log.info("{}", judge);
+        int[] answers = {0, 0, 1, 1, 1};
+        log.info(numRabbits(answers) + "");
     }
 }
