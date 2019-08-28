@@ -13,6 +13,13 @@ export const page_list = (page, size, params) => {
   return http.requestQuickGet(apiUrl + '/cms/page/list/' + page + '/' + size + '?' + param)
 }
 
+//  新增页面
+// eslint-disable-next-line camelcase
+export const page_add = (params) => {
+  // 请求服务端的页面查询接口
+  return http.requestPost(apiUrl + '/cms/page/add/', params)
+}
+
 // eslint-disable-next-line camelcase
 export const site_list = () => {
   // 请求服务端的页面查询接口

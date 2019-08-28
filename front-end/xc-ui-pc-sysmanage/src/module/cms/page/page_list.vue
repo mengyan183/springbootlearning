@@ -13,6 +13,11 @@
       页面别名：
       <el-input v-model="params.pageAliase" style="width: 100px"></el-input>
       <el-button type="primary" v-on:click="query" size="small">查询</el-button>
+      <router-link class="mui‐tab‐item" :to="{path:'/cms/page/add/',query:{
+        page: this.params.page,
+        siteId: this.params.siteId}}">
+        <el-button type="primary" size="small">新增页面</el-button>
+      </router-link>
     </el-form>
     <!--编写页面静态部分，即view部分-->
     <el-button type="primary" size="small" v-on:click="query">查询</el-button>
@@ -65,7 +70,6 @@
     },
     methods:{
       query:function(){
-        // alert('查询')
         //调用服务端的接口
         cmsApi.page_list(this.params.page,this.params.size,this.params).then((res)=>{
           //将res结果数据赋值给数据模型对象
@@ -94,6 +98,11 @@
       //当DOM元素渲染完成后调用query
         this.query();
         this.querySiteList();
+    },
+    created() {
+        //从路由上获取参数
+        this.params.page = Number.parseInt(this.$route.query.page||1);
+        this.params.siteId = this.$route.query.siteId||'';
     }
   }
 </script>
