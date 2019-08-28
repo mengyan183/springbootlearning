@@ -126,7 +126,7 @@
                     type: 'success'
                   });
                   this.$refs['pageForm'].resetFields();
-
+                  this.go_back();
                 }else if(res.message){
                   this.addLoading = false;
                   this.$message.error(res.message);

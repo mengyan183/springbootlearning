@@ -19,8 +19,6 @@
         <el-button type="primary" size="small">新增页面</el-button>
       </router-link>
     </el-form>
-    <!--编写页面静态部分，即view部分-->
-    <el-button type="primary" size="small" v-on:click="query">查询</el-button>
     <el-table
       :data="list"
       stripe
