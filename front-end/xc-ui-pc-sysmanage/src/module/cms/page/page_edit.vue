@@ -132,20 +132,17 @@
           }
         });
       }
-
     },
     created: function () {
       this.pageId=this.$route.params.pageId;
       //根据主键查询页面信息
       cmsApi.page_get(this.pageId).then((res) => {
-        console.log(res);
         if(res){
           this.pageForm = res;
         }
       });
     },
     mounted:function(){
-
       //初始化站点列表
       this.siteList = [
         {
