@@ -117,14 +117,13 @@
             this.$confirm('确认提交吗？', '提示', {}).then(() => {
               this.addLoading = true;
               cmsApi.page_add(this.pageForm).then((res) => {
-                  console.log(res);
                 if(res.success){
                   this.addLoading = false;
-                  //NProgress.done();
-                  this.$message({
-                    message: '提交成功',
-                    type: 'success'
-                  });
+                  // this.$message({
+                  //   message: '提交成功',
+                  //   type: 'success'
+                  // });
+                  this.$message.success("提交成功");
                   this.$refs['pageForm'].resetFields();
                   this.go_back();
                 }else if(res.message){

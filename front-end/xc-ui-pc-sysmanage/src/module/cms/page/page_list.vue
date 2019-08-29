@@ -188,6 +188,7 @@
         this.querySiteList();
     },
     created() {
+        // 页面渲染之前
         //从路由上获取参数
         this.params.page = Number.parseInt(this.$route.query.page||1);
         this.params.siteId = this.$route.query.siteId||'';
