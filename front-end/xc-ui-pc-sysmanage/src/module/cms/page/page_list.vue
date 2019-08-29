@@ -39,7 +39,6 @@
       </el-table-column>
       <el-table-column label="编辑" width="80">
         <template slot-scope="scope">
-
           <el-button
             size="small" type="primary"
             @click="edit(scope.row.pageId)">编辑
@@ -130,6 +129,7 @@
             });
         },
         edit(pageId) {
+            // 改变路由 地址
             this.$router.push({
                 path: '/cms/page/edit/' + pageId, query: {
                     page: this.params.page,

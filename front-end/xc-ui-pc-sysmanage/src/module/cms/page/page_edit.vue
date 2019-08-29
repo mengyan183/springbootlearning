@@ -113,7 +113,6 @@
             this.$confirm('确认提交吗？', '提示', {}).then(() => {
               this.addLoading = true;
               cmsApi.page_edit(this.pageId,this.pageForm).then((res) => {
-                  console.log(res);
                 if(res.success){
                   this.addLoading = false;
                   this.$message({
@@ -144,27 +143,17 @@
     },
     mounted:function(){
       //初始化站点列表
-      this.siteList = [
-        {
-          siteId:'5a751fab6abb5044e0d19ea1',
-          siteName:'门户主站'
-        },
-        {
-          siteId:'102',
-          siteName:'测试站'
-        }
-      ]
+      cmsApi.site_list().then((res) => {
+          if(res){
+              this.siteList = res;
+          }
+      });
       //模板列表
-      this.templateList = [
-        {
-          templateId:'5a962b52b00ffc514038faf7',
-          templateName:'首页'
-        },
-        {
-          templateId:'5a962bf8b00ffc514038fafa',
-          templateName:'轮播图'
-        }
-      ]
+        cmsApi.template_listAll().then((res) => {
+            if (res) {
+                this.templateList = res;
+            }
+        });
     }
   }
 </script>

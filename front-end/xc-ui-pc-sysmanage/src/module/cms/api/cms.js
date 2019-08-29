@@ -28,7 +28,7 @@ export const page_add = (params) => {
   // 请求服务端的页面查询接口
   return http.requestPost(apiUrl + '/cms/page/add/', params)
 }
-
+// 站点列表
 // eslint-disable-next-line camelcase
 export const site_list = () => {
   // 请求服务端的页面查询接口
@@ -54,4 +54,9 @@ export const page_getHtml = id => {
 // eslint-disable-next-line camelcase
 export const page_postPage = id => {
   return http.requestPost(apiUrl + '/cms/page/postPage/' + id)
+}
+// 模板列表
+// eslint-disable-next-line camelcase
+export const template_listAll = () => {
+  return http.requestGet(apiUrl + '/cms/template/listall')
 }

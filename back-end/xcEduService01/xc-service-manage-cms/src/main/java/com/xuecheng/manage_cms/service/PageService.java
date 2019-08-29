@@ -106,7 +106,6 @@ public class PageService {
             //抛出异常，异常内容就是页面已经存在
             ExceptionCast.cast(CmsCode.CMS_ADDPAGE_EXISTSNAME);
         }
-
         //调用dao新增页面 (使用自动生成主键)
         cmsPage.setPageId(null);
         cmsPageRepository.save(cmsPage);
@@ -116,11 +115,7 @@ public class PageService {
     //根据页面id查询页面
     public CmsPage getById(String id){
         Optional<CmsPage> optional = cmsPageRepository.findById(id);
-        if(optional.isPresent()){
-            CmsPage cmsPage = optional.get();
-            return cmsPage;
-        }
-        return null;
+        return optional.orElse(null);
     }
 
     //修改页面
