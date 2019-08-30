@@ -14,14 +14,14 @@
     <div class="banner-item">
         <#if model??>
             <#list model as item>
-<#--                <div class="item" style="background-image: url(${item.value});"></div>-->
+                <div class="item" style="background-image: url(${item.value});"></div>
             </#list>
         </#if>
-	    <div class="item" style="background-image: url(http://localhost:31000/xc/static/img/widget-bannerA.jpg);"></div>
-        <div class="item" style="background-image: url(http://localhost:31000/xc/static/img/widget-banner3.png);"></div>
-        <div class="item" style="background-image: url(http://localhost:31000/xc/static/img/widget-bannerB.jpg);"></div>
-        <div class="item" style="background-image: url(http://localhost:31000/xc/static/img/widget-bannerA.jpg);"></div>
-        <div class="item" style="background-image: url(http://localhost:31000/xc/static/img/widget-banner3.png);"></div>
+<#--	    <div class="item" style="background-image: url(http://localhost:31000/xc/static/img/widget-bannerA.jpg);"></div>-->
+<#--        <div class="item" style="background-image: url(http://localhost:31000/xc/static/img/widget-banner3.png);"></div>-->
+<#--        <div class="item" style="background-image: url(http://localhost:31000/xc/static/img/widget-bannerB.jpg);"></div>-->
+<#--        <div class="item" style="background-image: url(http://localhost:31000/xc/static/img/widget-bannerA.jpg);"></div>-->
+<#--        <div class="item" style="background-image: url(http://localhost:31000/xc/static/img/widget-banner3.png);"></div>-->
     </div>
     <div class="indicators"></div>
 </div>

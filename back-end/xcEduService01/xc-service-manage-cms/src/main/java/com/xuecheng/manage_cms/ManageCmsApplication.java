@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2019, crayonshinchanxingguo.com Inc. All Rights Reserved
+ */
 package com.xuecheng.manage_cms;
 
 import org.springframework.boot.SpringApplication;

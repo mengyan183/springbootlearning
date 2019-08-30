@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Jiehun.com.cn Inc. All Rights Reserved
+ * Copyright (c) 2019, crayonshinchanxingguo.com Inc. All Rights Reserved
  */
 
 import com.xuecheng.test.freemarker.FreemarkerTestApplication;
@@ -37,6 +37,7 @@ public class FreemarkerTest {
     public void testGenerateHtml() throws IOException, TemplateException {
         //创建配置类
         Configuration configuration=new Configuration(Configuration.getVersion());
+        // 这里获取的是 test 的 配置文件数据
         String classpath = this.getClass().getResource("/").getPath();
         //设置模板路径
         configuration.setDirectoryForTemplateLoading(new File(classpath + "/templates/"));

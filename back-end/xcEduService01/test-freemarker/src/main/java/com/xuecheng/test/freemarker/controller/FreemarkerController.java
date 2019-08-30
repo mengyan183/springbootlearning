@@ -4,6 +4,7 @@ import com.xuecheng.test.freemarker.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,7 +23,7 @@ public class FreemarkerController {
     @Autowired
     RestTemplate restTemplate;
 
-    @RequestMapping("/banner")
+    @GetMapping("/banner")
     public String indexBanner(Map<String, Object> map) {
         //使用restTemplate请求轮播图的模型数据
         ResponseEntity<Map> forEntity = restTemplate.getForEntity("http://localhost:31001/cms/config/getmodel/5a791725dd573c3574ee333f", Map.class);
@@ -34,7 +35,7 @@ public class FreemarkerController {
         return "index_banner";
     }
 
-    @RequestMapping("/test1")
+    @GetMapping("/test1")
     public String freemarker(Map<String, Object> map) {
         //向数据模型放数据
         map.put("name", "黑马程序员");

@@ -30,4 +30,5 @@ public class CmsConfigService {
         Optional<CmsConfig> cmsConfig = cmsConfigRepository.findById(id);
         return cmsConfig.orElse(null);
     }
+
 }
