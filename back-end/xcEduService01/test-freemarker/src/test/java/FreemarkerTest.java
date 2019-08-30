@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, crayonshinchanxingguo.com Inc. All Rights Reserved
+ * Copyright (c) 2019,crayonshinchanxingguo.com Inc. All Rights Reserved
  */
 
 import com.xuecheng.test.freemarker.FreemarkerTestApplication;

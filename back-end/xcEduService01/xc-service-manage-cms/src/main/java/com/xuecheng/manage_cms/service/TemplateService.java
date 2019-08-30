@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, crayonshinchanxingguo.com Inc. All Rights Reserved
+ * Copyright (c) 2019,crayonshinchanxingguo.com Inc. All Rights Reserved
  */
 package com.xuecheng.manage_cms.service;
 
