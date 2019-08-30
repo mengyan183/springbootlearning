@@ -147,6 +147,7 @@
         },
         //预览页面
         preview(pageId){
+            // 打开nginx代理 访问
             window.open("http://localhost:31000/cms/preview/"+pageId)
         },
         //删除
