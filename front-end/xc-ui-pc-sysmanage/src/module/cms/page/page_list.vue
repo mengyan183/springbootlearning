@@ -54,6 +54,14 @@
           </el-button>
         </template>
       </el-table-column>
+      <el-table-column label="页面预览" width="80">
+        <template slot-scope="scope">
+          <el-button
+            size="small" type="primary"
+            @click="preview(scope.row.pageId)">页面预览
+          </el-button>
+        </template>
+      </el-table-column>
       <el-table-column label="静态化" width="80">
         <template slot-scope="scope">
           <el-button
@@ -136,6 +144,10 @@
                     siteId: this.params.siteId
                 }
             })
+        },
+        //预览页面
+        preview(pageId){
+            window.open("http://localhost:31000/cms/preview/"+pageId)
         },
         //删除
         del(index, row) {

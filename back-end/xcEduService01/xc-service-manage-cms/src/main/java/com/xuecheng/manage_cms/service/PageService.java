@@ -10,11 +10,18 @@ import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_cms.dao.CmsPageRepository;
+import freemarker.cache.StringTemplateLoader;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -26,8 +33,11 @@ import java.util.Optional;
 public class PageService {
 
     @Autowired
-    CmsPageRepository cmsPageRepository;
-
+    private CmsPageRepository cmsPageRepository;
+    @Autowired
+    private TemplateService templateService;
+    @Autowired
+    private RestTemplate restTemplate;
 
     /**
      * 页面查询方法
@@ -137,6 +147,8 @@ public class PageService {
             one.setPageWebPath(cmsPage.getPageWebPath());
             //更新物理路径
             one.setPagePhysicalPath(cmsPage.getPagePhysicalPath());
+            // 更新dataURL
+            one.setDataUrl(cmsPage.getDataUrl());
             //提交修改
             cmsPageRepository.save(one);
             return new CmsPageResult(CommonCode.SUCCESS,one);
@@ -155,5 +167,55 @@ public class PageService {
             return new ResponseResult(CommonCode.SUCCESS);
         }
         return new ResponseResult(CommonCode.FAIL);
+    }
+
+    /**
+     * 静态化程序获取页面的DataUrl
+     * 静态化程序远程请求DataUrl获取数据模型。
+     * 静态化程序获取页面的模板信息
+     * 执行页面静态化
+     *
+     * @author guoxing
+     * @date 2019-08-30 2:42 PM
+     * @since 2.0.0
+     **/
+    public String getPageHtmlByPageId(String pageId) throws Exception {
+        if (StringUtils.isBlank(pageId)) {
+            return null;
+        }
+        // 获取 cmspage
+        CmsPage cmsPage = this.getById(pageId);
+        if (cmsPage == null) {
+            return null;
+        }
+        // 获取 cmspage 中的 地址
+        String dataUrl = cmsPage.getDataUrl();
+        if (StringUtils.isBlank(dataUrl)) {
+            return null;
+        }
+        // 获取 模型数据
+        ResponseEntity<Map> forEntity = restTemplate.getForEntity(dataUrl, Map.class);
+        Map body = forEntity.getBody();
+        if (body == null) {
+            return null;
+        }
+        // 获取 静态资源 模板
+        String templateId = cmsPage.getTemplateId();
+        String content = templateService.getTemplateContentById(templateId);
+        if (StringUtils.isBlank(content)) {
+            return null;
+        }
+        // 根据 模型数据 和 模板 转换为 静态资源 (html)
+        //创建配置类
+        Configuration configuration = new Configuration(Configuration.getVersion());
+        //加载模板
+        //模板加载器
+        StringTemplateLoader stringTemplateLoader = new StringTemplateLoader();
+        stringTemplateLoader.putTemplate("template", content);
+        configuration.setTemplateLoader(stringTemplateLoader);
+        // 将模板语言转换为模板文件
+        Template template = configuration.getTemplate("template", "utf-8");
+        //静态化
+        return FreeMarkerTemplateUtils.processTemplateIntoString(template, body);
     }
 }

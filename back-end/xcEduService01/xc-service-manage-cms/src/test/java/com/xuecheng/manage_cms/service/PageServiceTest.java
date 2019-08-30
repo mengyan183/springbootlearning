@@ -3,7 +3,6 @@
  */
 package com.xuecheng.manage_cms.service;
 
-import com.xuecheng.framework.domain.cms.CmsTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,22 +20,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @Slf4j
-public class TemplateServiceTest {
+
+public class PageServiceTest {
 
     @Autowired
-    private TemplateService templateService;
+    private PageService pageService;
 
     @Test
-    public void addTemplate() throws Exception {
-        CmsTemplate cmsTemplate = new CmsTemplate();
-        cmsTemplate.setSiteId("5a751fab6abb5044e0d19ea1");
-        cmsTemplate.setTemplateName("测试模板");
-        cmsTemplate.setTemplateParameter("");
-        cmsTemplate.setTemplateFileId("5d68d747df43e1b23ce3bc25");
-        templateService.add(cmsTemplate);
+    public void getPageHtmlByPageId() throws Exception {
+        String pageId = "5a795ac7dd573c04508f3a56";
+        String pageHtmlByPageId = pageService.getPageHtmlByPageId(pageId);
+        log.info(pageHtmlByPageId);
     }
-
-
-
-
 }
