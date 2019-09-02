@@ -18,6 +18,8 @@
         <module>../xc-service-api</module>
         <module>../xc-service-manage-cms</module>
         <module>../test-freemarker</module>
+        <module>../test-rabbitmq-producer</module>
+        <module>../test-rabbitmq-consumer</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>

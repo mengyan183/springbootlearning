@@ -9,6 +9,7 @@ com\xuecheng\framework\domain\cms\request\QueryPageRequest.class
 com\xuecheng\framework\domain\ucenter\XcUser.class
 com\xuecheng\framework\domain\portalview\PreViewCourseMedia.class
 com\xuecheng\framework\domain\ucenter\response\LoginResult.class
+com\xuecheng\framework\domain\cms\response\CmsTemplateResult.class
 com\xuecheng\framework\domain\course\CourseOff.class
 com\xuecheng\framework\domain\course\response\AddCourseResult.class
 com\xuecheng\framework\domain\media\MediaFile.class
