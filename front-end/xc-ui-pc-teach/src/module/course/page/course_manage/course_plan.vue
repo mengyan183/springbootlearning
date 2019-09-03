@@ -61,21 +61,21 @@
   </div>
 </template>
 <script>
-  let id = 1000;
-  import * as courseApi from '../../api/course';
-  import utilApi from '../../../../common/utils';
-  import * as systemApi from '../../../../base/api/system';
-  import mediaList from '@/module/media/page/media_list.vue';
+let id = 1000
+// eslint-disable-next-line import/first
+import * as courseApi from '../../api/course'
+// eslint-disable-next-line import/first
+import mediaList from '@/module/media/page/media_list.vue'
 
   export default {
-    components:{
+    components: {
       mediaList
     },
-    data() {
+    data () {
       return {
-        mediaFormVisible:false,
-        teachplayFormVisible:false,//控制添加窗口是否显示
-        teachplanList : [{
+        mediaFormVisible: false,
+        teachplayFormVisible: false,// 控制添加窗口是否显示
+        teachplanList: [{
           id: 1,
           pname: '一级 1',
           children: [{
@@ -156,21 +156,20 @@
             }
         })
       },
-  //重置表单
-      resetForm(){
+      // 重置表单
+      resetForm () {
         this.teachplanActive = {}
       },
 
-      append(data) {
+      append (data) {
         const newChild = { id: id++, label: 'testtest', children: [] };
         if (!data.children) {
-          this.$set(data, 'children', []);
+          this.$set(data, 'children', [])
         }
-        data.children.push(newChild);
-
+        data.children.push(newChild)
       },
-      edit(data){
-        //alert(data.id);
+      edit (data) {
+        // alert(data.id);
       },
       remove(node, data) {
         const parent = node.parent;
@@ -194,21 +193,19 @@
       },
       findTeachplan(){
         this.teachplanList = []
-        //查询课程计划
-        courseApi.findTeachplanList(this.courseid).then(res=>{
-            if(res && res.children){
-              this.teachplanList = res.children;
-            }
-
-
+        // 查询课程计划
+        courseApi.findTeachplanList(this.courseid).then(res => {
+          if (res && res.children) {
+            this.teachplanList = res.children
+          }
         })
       }
     },
-    mounted(){
-      //课程id
+    mounted () {
+      // 课程id
       this.courseid = this.$route.params.courseid;
       //查询课程计划
-      // this.findTeachplan()
+      this.findTeachplan()
 
     }
   }

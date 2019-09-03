@@ -1,6 +1,8 @@
 package com.xuecheng.manage_course.dao;
 
+import com.alibaba.fastjson.JSON;
 import com.xuecheng.framework.domain.course.CourseBase;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import java.util.Optional;
  **/
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@Slf4j
 public class TestDao {
     @Autowired
     CourseBaseRepository courseBaseRepository;
@@ -26,7 +29,7 @@ public class TestDao {
         Optional<CourseBase> optional = courseBaseRepository.findById("402885816240d276016240f7e5000002");
         if(optional.isPresent()){
             CourseBase courseBase = optional.get();
-            System.out.println(courseBase);
+            log.info(JSON.toJSONString(courseBase));
         }
 
     }
@@ -34,7 +37,6 @@ public class TestDao {
     @Test
     public void testCourseMapper(){
         CourseBase courseBase = courseMapper.findCourseBaseById("402885816240d276016240f7e5000002");
-        System.out.println(courseBase);
-
+        log.info(JSON.toJSONString(courseBase));
     }
 }
