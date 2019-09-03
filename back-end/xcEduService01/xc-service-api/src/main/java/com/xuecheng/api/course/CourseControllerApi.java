@@ -3,7 +3,9 @@
  */
 package com.xuecheng.api.course;
 
+import com.xuecheng.framework.domain.course.Teachplan;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
+import com.xuecheng.framework.model.response.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -25,4 +27,14 @@ public interface CourseControllerApi {
      **/
     @ApiOperation("根据课程id获取课程计划")
     TeachplanNode findTeachPlanList(String courseId);
+
+    /**
+     * 新增课程计划
+     *
+     * @author guoxing
+     * @date 2019-09-03 6:07 PM
+     * @since 2.0.0
+     **/
+    @ApiOperation("新增课程计划")
+    ResponseResult addTeachPlan(Teachplan teachplan);
 }

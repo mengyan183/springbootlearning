@@ -4,15 +4,13 @@
 package com.xuecheng.manage_course.controller;
 
 import com.xuecheng.api.course.CourseControllerApi;
+import com.xuecheng.framework.domain.course.Teachplan;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
-import com.xuecheng.manage_course.service.CourseService;
+import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_course.service.TeachplanService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * CourseController
@@ -39,5 +37,19 @@ public class CourseController implements CourseControllerApi {
     @GetMapping("/teachplan/list/{courseId}")
     public TeachplanNode findTeachPlanList(@PathVariable("courseId") String courseId) {
         return teachplanService.findTeachPlanListByTopPlan(courseId);
+    }
+
+    /**
+     * 新增课程计划
+     *
+     * @param teachplan
+     * @author guoxing
+     * @date 2019-09-03 6:07 PM
+     * @since 2.0.0
+     */
+    @Override
+    @PostMapping("/teachplan/add")
+    public ResponseResult addTeachPlan(@RequestBody Teachplan teachplan) {
+        return teachplanService.addTeachPlan(teachplan);
     }
 }
