@@ -1,5 +1,6 @@
 package com.xuecheng.manage_cms.service;
 
+import com.alibaba.fastjson.JSON;
 import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.request.QueryPageRequest;
 import com.xuecheng.framework.domain.cms.response.CmsCode;
@@ -9,18 +10,28 @@ import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.framework.model.response.ResponseResult;
+import com.xuecheng.manage_cms.config.RabbitMqConfig;
 import com.xuecheng.manage_cms.dao.CmsPageRepository;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.bson.types.ObjectId;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -38,6 +49,10 @@ public class PageService {
     private TemplateService templateService;
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private GridFsTemplate gridFsTemplate;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     /**
      * 页面查询方法
@@ -218,4 +233,63 @@ public class PageService {
         //静态化
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, body);
     }
+
+    //页面发布
+    public ResponseResult postPage(String pageId) throws Exception {
+        //执行静态化
+        String pageHtml = this.getPageHtmlByPageId(pageId);
+        if (StringUtils.isEmpty(pageHtml)) {
+            ExceptionCast.cast(CmsCode.CMS_GENERATEHTML_HTMLISNULL);
+        }
+        //保存静态化文件
+        CmsPage cmsPage = saveHtml(pageId, pageHtml);
+        //发送消息
+        sendPostPage(cmsPage.getPageId());
+        return new ResponseResult(CommonCode.SUCCESS);
+    }
+
+    /**
+     * 发送mq 消息
+     *
+     * @param pageId
+     */
+    private void sendPostPage(String pageId) {
+        CmsPage cmsPage = this.getById(pageId);
+        if (cmsPage == null) {
+            ExceptionCast.cast(CmsCode.CMS_PAGE_NOTEXISTS);
+        }
+        Map<String, String> msgMap = new HashMap<>();
+        msgMap.put("pageId", pageId);
+        //消息内容
+        String msg = JSON.toJSONString(msgMap);
+        //获取站点id作为routingKey
+        String siteId = cmsPage.getSiteId();
+        //发布消息
+        rabbitTemplate.convertAndSend(RabbitMqConfig.EX_ROUTING_CMS_POSTPAGE, siteId, msg);
+    }
+
+    //保存静态页面内容
+    private CmsPage saveHtml(String pageId, String content) {
+        //查询页面
+        Optional<CmsPage> optional = cmsPageRepository.findById(pageId);
+        if (!optional.isPresent()) {
+            ExceptionCast.cast(CmsCode.CMS_PAGE_NOTEXISTS);
+        }
+        CmsPage cmsPage = optional.get();
+        //存储之前先删除
+        String htmlFileId = cmsPage.getHtmlFileId();
+        if (StringUtils.isNotBlank(htmlFileId)) {
+            gridFsTemplate.delete(Query.query(Criteria.where("_id").is(htmlFileId)));
+        }
+        //保存html文件到GridFS
+        InputStream inputStream = IOUtils.toInputStream(content, StandardCharsets.UTF_8);
+        ObjectId objectId = gridFsTemplate.store(inputStream, cmsPage.getPageName());
+        //文件id
+        String fileId = objectId.toString();
+        //将文件id存储到cmspage中
+        cmsPage.setHtmlFileId(fileId);
+        cmsPageRepository.save(cmsPage);
+        return cmsPage;
+    }
+
 }
