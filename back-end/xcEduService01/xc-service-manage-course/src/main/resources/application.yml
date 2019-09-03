@@ -5,10 +5,10 @@ spring:
     name: xc-service-manage-course
   datasource:
     druid:
-      url: jdbc:mysql://localhost:3306/xc_course?characterEncoding=utf-8
+      url: jdbc:mysql://localhost:3306/xc_course?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Hongkong
       username: root
-      password: mysql
-      driverClassName: com.mysql.jdbc.Driver
+      password:  N/mvu*b}C$1!
+      driverClassName: com.mysql.cj.jdbc.Driver
       initialSize: 5  #初始建立连接数量
       minIdle: 5  #最小连接数量
       maxActive: 20 #最大连接数量
