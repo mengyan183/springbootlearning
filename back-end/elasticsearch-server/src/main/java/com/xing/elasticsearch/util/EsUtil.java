@@ -147,6 +147,25 @@ public class EsUtil {
     }
 
     /**
+     * Description: 批量插入数据
+     *
+     * @param index index
+     * @param list  带插入列表
+     * @author xingguo
+     * @date 2019/7/24 17:38
+     */
+    public void insertOrUpdateBatch(String index, List<EsEntity> list) {
+        BulkRequest request = new BulkRequest();
+        list.forEach(item -> request.add(new IndexRequest(index).id(item.getId()).id(item.getId())
+                .source(JSON.toJSONString(item.getData()), XContentType.JSON)));
+        try {
+            client.bulk(request, RequestOptions.DEFAULT);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Description: 批量删除
      *
      * @param index  index

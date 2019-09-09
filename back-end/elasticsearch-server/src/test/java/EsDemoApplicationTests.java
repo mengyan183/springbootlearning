@@ -59,4 +59,14 @@ public class EsDemoApplicationTests {
     public void deleteIndex() {
         bookService.deleteIndex();
     }
+
+    @Test
+    public void updateList(){
+        List<Book> list = new ArrayList<>();
+        list.add(new Book(3, 1, "第1本书"));
+        list.add(new Book(4, 1, "第2本书"));
+        list.add(new Book(4, 1, "第3本书"));
+        list.add(new Book(1, 1, "第4本书"));
+        bookService.updateList(list);
+    }
 }

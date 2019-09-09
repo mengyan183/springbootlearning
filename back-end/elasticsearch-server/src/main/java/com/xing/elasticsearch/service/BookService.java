@@ -86,6 +86,18 @@ public class BookService {
     }
 
     /**
+     * 批量插入
+     *
+     * @param books books
+     */
+    @PutMapping("/update/many")
+    public void updateList(@RequestBody List<Book> books) {
+        List<EsEntity> list = new ArrayList<>();
+        books.forEach(item -> list.add(new EsEntity<>(item.getId().toString(), item)));
+        esUtil.insertOrUpdateBatch(EsUtil.INDEX_NAME, list);
+    }
+
+    /**
      * 批量删除
      *
      * @param list list
