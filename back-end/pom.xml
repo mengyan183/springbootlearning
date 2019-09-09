@@ -11,6 +11,7 @@
     <modules>
         <module>first-dubbo-provider</module>
         <module>first-dubbo-consumer</module>
+        <module>elasticsearch-server</module>
     </modules>
 
 
