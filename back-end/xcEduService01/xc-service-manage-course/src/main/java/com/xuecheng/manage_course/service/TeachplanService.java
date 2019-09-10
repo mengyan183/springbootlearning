@@ -127,7 +127,7 @@ public class TeachplanService {
                 teachplanRepository.save(teachplanRoot);
                 teachplan.setParentid(teachplanRoot.getId());
             } else {
-                teachplan.setParentid(teachplan.getId());
+                teachplan.setParentid(mainTeachplanByCourseId.getId());
             }
             teachplan.setGrade("2");
         } else {

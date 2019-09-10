@@ -1,5 +1,11 @@
 import http from './../../../base/api/public'
 import querystring from 'querystring'
+
+export function getCoursebaseById (courseid) {
+  //todo: 获取课程基础信息
+  return;
+}
+
 let sysConfig = require('@/../config/sysConfig')
 let apiUrl = sysConfig.xcApiUrlPre;
 
