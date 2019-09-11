@@ -37,8 +37,9 @@ public class EsDemoApplicationTests {
     @Test
     public void addBatchTest() {
         List<Book> list = new ArrayList<>();
-        list.add(new Book(3, 1, "第一本书"));
-        list.add(new Book(4, 1, "第二本书"));
+        for (int i = 0; i < 20000; i++) {
+            list.add(new Book(i, 1, "第" + i + "本书"));
+        }
         bookService.putList(list);
     }
 
@@ -61,7 +62,7 @@ public class EsDemoApplicationTests {
     }
 
     @Test
-    public void updateList(){
+    public void updateList() {
         List<Book> list = new ArrayList<>();
         list.add(new Book(3, 1, "第1本书"));
         list.add(new Book(4, 1, "第2本书"));
@@ -71,7 +72,7 @@ public class EsDemoApplicationTests {
     }
 
     @Test
-    public void testPage(){
+    public void testPage() {
         List<Book> books = bookService.searchPage();
     }
 }

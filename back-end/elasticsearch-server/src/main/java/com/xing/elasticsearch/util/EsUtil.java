@@ -12,14 +12,18 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.core.CountRequest;
+import org.elasticsearch.client.core.CountResponse;
 import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.elasticsearch.client.indices.GetIndexRequest;
@@ -77,10 +81,10 @@ public class EsUtil {
                         return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
                     }));
             if (this.indexExist(INDEX_NAME)) {
-                return;
+                deleteIndex(INDEX_NAME);
             }
             CreateIndexRequest request = new CreateIndexRequest(INDEX_NAME);
-            request.settings(Settings.builder().put("index.number_of_shards", 3).put("index.number_of_replicas", 2));
+//            request.settings(Settings.builder().put("index.number_of_shards", 3).put("index.number_of_replicas", 2));
             request.mapping(JSON.toJSONString(new Book()), XContentType.JSON);
             CreateIndexResponse res = client.indices().create(request, RequestOptions.DEFAULT);
             if (!res.isAcknowledged()) {
@@ -137,10 +141,20 @@ public class EsUtil {
      */
     public void insertBatch(String index, List<EsEntity> list) {
         BulkRequest request = new BulkRequest();
-        list.forEach(item -> request.add(new IndexRequest(index).id(item.getId())
+        list.forEach(item -> request.add(new IndexRequest(index).setRefreshPolicy(WriteRequest.RefreshPolicy.NONE).id(item.getId())
                 .source(JSON.toJSONString(item.getData()), XContentType.JSON)));
+        request.setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL);
         try {
-            client.bulk(request, RequestOptions.DEFAULT);
+            long l = System.currentTimeMillis();
+            BulkResponse bulk = client.bulk(request, RequestOptions.DEFAULT);
+            if(bulk.hasFailures()){
+                throw new RuntimeException("error");
+            }
+            System.out.println(System.currentTimeMillis()-l+" ms");
+            CountRequest countRequest = new CountRequest(index);
+            countRequest.source(new SearchSourceBuilder().query(QueryBuilders.matchAllQuery()));
+            CountResponse count = client.count(countRequest, RequestOptions.DEFAULT);
+            System.out.println(count.getCount());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
