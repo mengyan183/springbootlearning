@@ -69,4 +69,9 @@ public class EsDemoApplicationTests {
         list.add(new Book(1, 1, "第4本书"));
         bookService.updateList(list);
     }
+
+    @Test
+    public void testPage(){
+        List<Book> books = bookService.searchPage();
+    }
 }

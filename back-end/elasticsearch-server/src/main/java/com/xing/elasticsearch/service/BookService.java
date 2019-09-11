@@ -62,6 +62,15 @@ public class BookService {
 
     }
 
+    @GetMapping("/search/page")
+    public List<Book> searchPage(){
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
+                .from(0)
+                .size(2)
+                .trackTotalHits(true);
+        return esUtil.search(EsUtil.INDEX_NAME, searchSourceBuilder, Book.class);
+    }
+
     /**
      * 单个插入
      *
