@@ -3,11 +3,15 @@ import com.xuecheng.test.rabbitmq.producer.RabbitMQProducerTestApplication;
 import com.xuecheng.test.rabbitmq.producer.config.RabbitmqConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +38,22 @@ public class Producer05_topics_springboot {
          * 3、消息内容
          */
         rabbitTemplate.convertAndSend(RabbitmqConfig.EXCHANGE_TOPICS_INFORM, "inform.email", message);
+
+    }
+
+    //使用rabbitTemplate发送消息
+    @Test
+    public void testSendDelayMessage() {
+
+        String message = "send delay message to user";
+        Integer delayTime = 10000;
+        this.rabbitTemplate.convertAndSend(RabbitmqConfig.DELAYED_EXCHANGE_DELAY, "delay.message", message, new MessagePostProcessor() {
+            @Override
+            public Message postProcessMessage(Message message) throws AmqpException {
+                message.getMessageProperties().setDelay(delayTime);
+                return message;
+            }
+        });
 
     }
 

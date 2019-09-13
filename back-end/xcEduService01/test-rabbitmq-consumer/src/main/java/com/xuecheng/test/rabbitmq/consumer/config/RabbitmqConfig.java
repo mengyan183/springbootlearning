@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * RabbitmqConfig
  *
@@ -64,5 +67,29 @@ public class RabbitmqConfig {
     public Binding BINDING_QUEUE_INFORM_EMAIL(@Qualifier(QUEUE_INFORM_EMAIL) Queue queue,
                                               @Qualifier(EXCHANGE_TOPICS_INFORM) Exchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with("inform.#.email.#").noargs();
+    }
+
+
+    public static final String IMMEDIATE_QUEUE_DELAY="delay_queue";
+    public static final String DELAYED_EXCHANGE_DELAY="delay_exchange";
+
+
+    // 创建一个立即消费队列
+    @Bean(IMMEDIATE_QUEUE_DELAY)
+    public Queue immediateQueue() {
+        // 第一个参数是创建的queue的名字，第二个参数是是否支持持久化
+        return new Queue(IMMEDIATE_QUEUE_DELAY, true);
+    }
+
+    @Bean(DELAYED_EXCHANGE_DELAY)
+    public CustomExchange delayExchange() {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-delayed-type", "direct");
+        return new CustomExchange(DELAYED_EXCHANGE_DELAY, "x-delayed-message", true, false, args);
+    }
+
+    @Bean
+    public Binding bindingNotify(@Qualifier(IMMEDIATE_QUEUE_DELAY) Queue queue, @Qualifier(DELAYED_EXCHANGE_DELAY)CustomExchange customExchange) {
+        return BindingBuilder.bind(queue).to(customExchange).with("delay.message").noargs();
     }
 }
