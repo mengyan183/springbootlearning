@@ -41,6 +41,7 @@ public class ConsumerHandler {
 
     @RabbitListener(queues = {RabbitmqConfig.IMMEDIATE_QUEUE_DELAY})
     public void receiveDelayMessage(String msg, Message message, Channel channel) {
+        log.info(System.currentTimeMillis() + "");
         log.info(msg);
     }
 

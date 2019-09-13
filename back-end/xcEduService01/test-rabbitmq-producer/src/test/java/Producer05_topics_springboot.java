@@ -1,6 +1,7 @@
 import com.alibaba.fastjson.JSON;
 import com.xuecheng.test.rabbitmq.producer.RabbitMQProducerTestApplication;
 import com.xuecheng.test.rabbitmq.producer.config.RabbitmqConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.amqp.AmqpException;
@@ -22,6 +23,7 @@ import java.util.Map;
  **/
 @SpringBootTest(classes = {RabbitMQProducerTestApplication.class})
 @RunWith(SpringRunner.class)
+@Slf4j
 public class Producer05_topics_springboot {
     @Autowired
     RabbitTemplate rabbitTemplate;
@@ -51,6 +53,7 @@ public class Producer05_topics_springboot {
             @Override
             public Message postProcessMessage(Message message) throws AmqpException {
                 message.getMessageProperties().setDelay(delayTime);
+                log.info(System.currentTimeMillis() + "");
                 return message;
             }
         });
