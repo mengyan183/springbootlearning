@@ -5,14 +5,17 @@ package com.xuecheng.manage_course.controller;
 
 import com.github.pagehelper.Page;
 import com.xuecheng.api.course.CourseControllerApi;
+import com.xuecheng.framework.domain.course.CourseBase;
 import com.xuecheng.framework.domain.course.Teachplan;
 import com.xuecheng.framework.domain.course.ext.CourseInfo;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
 import com.xuecheng.framework.domain.course.request.CourseListRequest;
+import com.xuecheng.framework.domain.course.response.AddCourseResult;
 import com.xuecheng.framework.domain.course.response.CourseCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.framework.model.response.ResponseResult;
+import com.xuecheng.manage_course.service.CourseBaseService;
 import com.xuecheng.manage_course.service.CourseService;
 import com.xuecheng.manage_course.service.TeachplanService;
 import io.swagger.annotations.Api;
@@ -34,6 +37,8 @@ public class CourseController implements CourseControllerApi {
     private TeachplanService teachplanService;
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private CourseBaseService courseBaseService;
     /**
      * 根据课程id获取课程计划
      *
@@ -71,5 +76,11 @@ public class CourseController implements CourseControllerApi {
         queryResult.setList(list.getResult());
         queryResult.setTotal(list.getTotal());
         return new QueryResponseResult<>(CourseCode.COURSE_SUCCESS, queryResult);
+    }
+
+    @Override
+    @PostMapping("/coursebase/add")
+    public AddCourseResult addCourseBase(@RequestBody CourseBase courseBase) {
+        return courseBaseService.addCourseBase(courseBase);
     }
 }
