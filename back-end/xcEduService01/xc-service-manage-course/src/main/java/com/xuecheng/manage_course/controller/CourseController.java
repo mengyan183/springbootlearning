@@ -3,10 +3,17 @@
  */
 package com.xuecheng.manage_course.controller;
 
+import com.github.pagehelper.Page;
 import com.xuecheng.api.course.CourseControllerApi;
 import com.xuecheng.framework.domain.course.Teachplan;
+import com.xuecheng.framework.domain.course.ext.CourseInfo;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
+import com.xuecheng.framework.domain.course.request.CourseListRequest;
+import com.xuecheng.framework.domain.course.response.CourseCode;
+import com.xuecheng.framework.model.response.QueryResponseResult;
+import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.framework.model.response.ResponseResult;
+import com.xuecheng.manage_course.service.CourseService;
 import com.xuecheng.manage_course.service.TeachplanService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +32,8 @@ import org.springframework.web.bind.annotation.*;
 public class CourseController implements CourseControllerApi {
     @Autowired
     private TeachplanService teachplanService;
+    @Autowired
+    private CourseService courseService;
     /**
      * 根据课程id获取课程计划
      *
@@ -51,5 +60,16 @@ public class CourseController implements CourseControllerApi {
     @PostMapping("/teachplan/add")
     public ResponseResult addTeachPlan(@RequestBody Teachplan teachplan) {
         return teachplanService.addTeachPlan(teachplan);
+    }
+
+    @Override
+    @GetMapping("/coursebase/list/{page}/{size}")
+    public QueryResponseResult<CourseInfo> findCourseList(@PathVariable("page") int page, @PathVariable("size") int size, CourseListRequest courseListRequest) {
+        //分页查询
+        Page<CourseInfo> list = courseService.list(page, size, courseListRequest);
+        QueryResult<CourseInfo> queryResult = new QueryResult<>();
+        queryResult.setList(list.getResult());
+        queryResult.setTotal(list.getTotal());
+        return new QueryResponseResult<>(CourseCode.COURSE_SUCCESS, queryResult);
     }
 }

@@ -2,6 +2,8 @@ package com.xuecheng.manage_course.dao;
 
 import com.alibaba.fastjson.JSON;
 import com.xuecheng.framework.domain.course.CourseBase;
+import com.xuecheng.framework.domain.course.ext.CategoryNode;
+import com.xuecheng.manage_course.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.sound.midi.Soundbank;
 import java.util.Optional;
 
 /**
@@ -22,6 +23,8 @@ import java.util.Optional;
 public class TestDao {
     @Autowired
     CourseBaseRepository courseBaseRepository;
+    @Autowired
+    private CategoryService categoryService;
     @Autowired
     CourseMapper courseMapper;
     @Test
@@ -38,5 +41,11 @@ public class TestDao {
     public void testCourseMapper(){
         CourseBase courseBase = courseMapper.findCourseBaseById("402885816240d276016240f7e5000002");
         log.info(JSON.toJSONString(courseBase));
+    }
+
+    @Test
+    public void findList(){
+        CategoryNode list = categoryService.findList();
+        log.info(list.toString());
     }
 }
