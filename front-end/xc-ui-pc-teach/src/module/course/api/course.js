@@ -1,9 +1,12 @@
 import http from './../../../base/api/public'
 import querystring from 'querystring'
 
+export function updateCoursebase (id, courseForm) {
+  return http.requestPost(apiUrl + '/course/coursebase/update/' + id, courseForm)
+}
+
 export function getCoursebaseById (courseid) {
-  //todo: 获取课程基础信息
-  return;
+  return http.requestQuickGet(apiUrl + '/course/coursebase/get/' + courseid)
 }
 
 let sysConfig = require('@/../config/sysConfig')

@@ -83,4 +83,16 @@ public class CourseController implements CourseControllerApi {
     public AddCourseResult addCourseBase(@RequestBody CourseBase courseBase) {
         return courseBaseService.addCourseBase(courseBase);
     }
+
+    @Override
+    @GetMapping("/coursebase/get/{courseBaseId}")
+    public CourseBase getCoursebaseById(@PathVariable("courseBaseId") String courseBaseId) {
+        return courseBaseService.getCoursebaseById(courseBaseId);
+    }
+
+    @Override
+    @PostMapping("/coursebase/update/{courseBaseId}")
+    public ResponseResult updateCourseBase(@PathVariable("courseBaseId") String courseBaseId,@RequestBody CourseBase courseBase) {
+        return courseBaseService.updateCourseBase(courseBaseId,courseBase);
+    }
 }
