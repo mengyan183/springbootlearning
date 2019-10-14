@@ -61,5 +61,5 @@ public interface CourseControllerApi {
     CourseMarket getCourseMarketById(String courseId);
 
     @ApiOperation("编辑课程营销信息")
-    CourseMarket editCourseMarket(String courseId, CourseMarket courseMarket);
+    ResponseResult editCourseMarket(String courseId, CourseMarket courseMarket);
 }

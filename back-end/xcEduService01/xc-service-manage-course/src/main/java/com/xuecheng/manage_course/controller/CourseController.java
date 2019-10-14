@@ -108,7 +108,7 @@ public class CourseController implements CourseControllerApi {
 
     @Override
     @PostMapping("/coursemarket/edit/{courseId}")
-    public CourseMarket editCourseMarket(@PathVariable("courseId") String courseId,@RequestBody CourseMarket courseMarket) {
+    public ResponseResult editCourseMarket(@PathVariable("courseId") String courseId,@RequestBody CourseMarket courseMarket) {
         return courseMarketService.editCourseMarket(courseId,courseMarket);
     }
 }

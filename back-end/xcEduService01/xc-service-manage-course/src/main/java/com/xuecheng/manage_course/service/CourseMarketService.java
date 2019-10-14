@@ -44,9 +44,9 @@ public class CourseMarketService {
      * @date 2019-10-14 5:37 PM
      * @since 2.0.0
      **/
-    public CourseMarket editCourseMarket(String courseId, CourseMarket courseMarket) {
+    public ResponseResult editCourseMarket(String courseId, CourseMarket courseMarket) {
         if(StringUtils.isBlank(courseId) || courseMarket == null){
-            return null;
+            return new ResponseResult(CommonCode.INVALID_PARAM);
         }
         CourseMarket one = this.getCourseMarketById(courseId);
         if(one!=null){
@@ -65,6 +65,6 @@ public class CourseMarketService {
             one.setId(courseId);
             courseMarketRepository.save(one);
         }
-        return one;
+        return new ResponseResult(CommonCode.SUCCESS);
     }
 }
