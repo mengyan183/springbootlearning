@@ -3,10 +3,22 @@
  */
 package com.xuecheng.manage_course.controller;
 
+import com.github.pagehelper.Page;
 import com.xuecheng.api.course.CourseControllerApi;
+import com.xuecheng.framework.domain.course.CourseBase;
+import com.xuecheng.framework.domain.course.CourseMarket;
 import com.xuecheng.framework.domain.course.Teachplan;
+import com.xuecheng.framework.domain.course.ext.CourseInfo;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
+import com.xuecheng.framework.domain.course.request.CourseListRequest;
+import com.xuecheng.framework.domain.course.response.AddCourseResult;
+import com.xuecheng.framework.domain.course.response.CourseCode;
+import com.xuecheng.framework.model.response.QueryResponseResult;
+import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.framework.model.response.ResponseResult;
+import com.xuecheng.manage_course.service.CourseBaseService;
+import com.xuecheng.manage_course.service.CourseMarketService;
+import com.xuecheng.manage_course.service.CourseService;
 import com.xuecheng.manage_course.service.TeachplanService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +37,12 @@ import org.springframework.web.bind.annotation.*;
 public class CourseController implements CourseControllerApi {
     @Autowired
     private TeachplanService teachplanService;
+    @Autowired
+    private CourseService courseService;
+    @Autowired
+    private CourseBaseService courseBaseService;
+    @Autowired
+    private CourseMarketService courseMarketService;
     /**
      * 根据课程id获取课程计划
      *
@@ -51,5 +69,46 @@ public class CourseController implements CourseControllerApi {
     @PostMapping("/teachplan/add")
     public ResponseResult addTeachPlan(@RequestBody Teachplan teachplan) {
         return teachplanService.addTeachPlan(teachplan);
+    }
+
+    @Override
+    @GetMapping("/coursebase/list/{page}/{size}")
+    public QueryResponseResult<CourseInfo> findCourseList(@PathVariable("page") int page, @PathVariable("size") int size, CourseListRequest courseListRequest) {
+        //分页查询
+        Page<CourseInfo> list = courseService.list(page, size, courseListRequest);
+        QueryResult<CourseInfo> queryResult = new QueryResult<>();
+        queryResult.setList(list.getResult());
+        queryResult.setTotal(list.getTotal());
+        return new QueryResponseResult<>(CourseCode.COURSE_SUCCESS, queryResult);
+    }
+
+    @Override
+    @PostMapping("/coursebase/add")
+    public AddCourseResult addCourseBase(@RequestBody CourseBase courseBase) {
+        return courseBaseService.addCourseBase(courseBase);
+    }
+
+    @Override
+    @GetMapping("/coursebase/get/{courseBaseId}")
+    public CourseBase getCoursebaseById(@PathVariable("courseBaseId") String courseBaseId) {
+        return courseBaseService.getCoursebaseById(courseBaseId);
+    }
+
+    @Override
+    @PostMapping("/coursebase/update/{courseBaseId}")
+    public ResponseResult updateCourseBase(@PathVariable("courseBaseId") String courseBaseId,@RequestBody CourseBase courseBase) {
+        return courseBaseService.updateCourseBase(courseBaseId,courseBase);
+    }
+
+    @Override
+    @GetMapping("/coursemarket/get/{courseId}")
+    public CourseMarket getCourseMarketById(@PathVariable("courseId") String courseId) {
+        return courseMarketService.getCourseMarketById(courseId);
+    }
+
+    @Override
+    @PostMapping("/coursemarket/edit/{courseId}")
+    public ResponseResult editCourseMarket(@PathVariable("courseId") String courseId,@RequestBody CourseMarket courseMarket) {
+        return courseMarketService.editCourseMarket(courseId,courseMarket);
     }
 }

@@ -1,9 +1,22 @@
 import http from './../../../base/api/public'
 import querystring from 'querystring'
 
+export function getCourseMarketById (courseid) {
+  // 获取课程营销信息
+  return http.requestQuickGet(apiUrl + '/course/coursemarket/get/' + courseid)
+}
+
+export function updateCourseMarket (courseid, courseMarketForm) {
+  // 新增/更新课程营销
+  return http.requestPost(apiUrl + '/course/coursemarket/edit/' + courseid, courseMarketForm)
+}
+
+export function updateCoursebase (id, courseForm) {
+  return http.requestPost(apiUrl + '/course/coursebase/update/' + id, courseForm)
+}
+
 export function getCoursebaseById (courseid) {
-  //todo: 获取课程基础信息
-  return;
+  return http.requestQuickGet(apiUrl + '/course/coursebase/get/' + courseid)
 }
 
 let sysConfig = require('@/../config/sysConfig')
