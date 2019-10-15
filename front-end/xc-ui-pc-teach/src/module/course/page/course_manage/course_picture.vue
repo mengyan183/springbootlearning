@@ -9,6 +9,7 @@
       :limit="picmax"
       :on-exceed="rejectupload"
       :before-remove="handleRemove"
+      :name="multipartFile"
       :data="uploadval">
       <i class="el-icon-plus"></i>
     </el-upload>
