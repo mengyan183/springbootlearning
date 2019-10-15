@@ -12,6 +12,7 @@ import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_course.dao.CourseMapper;
 import com.xuecheng.manage_course.dao.CoursePicRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,5 +64,14 @@ public class CourseService {
         //保存课程图片
         coursePicRepository.save(coursePic);
         return new ResponseResult(CommonCode.SUCCESS);
+    }
+
+    public CoursePic getCoursePic(String courseId) {
+        if(StringUtils.isBlank(courseId)){
+            return null;
+        }
+        CoursePic coursePic = new CoursePic();
+        coursePic.setCourseid(courseId);
+        return coursePicRepository.findOne(coursePic);
     }
 }

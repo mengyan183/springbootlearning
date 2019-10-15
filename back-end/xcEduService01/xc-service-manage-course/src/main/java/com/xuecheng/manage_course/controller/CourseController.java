@@ -7,6 +7,7 @@ import com.github.pagehelper.Page;
 import com.xuecheng.api.course.CourseControllerApi;
 import com.xuecheng.framework.domain.course.CourseBase;
 import com.xuecheng.framework.domain.course.CourseMarket;
+import com.xuecheng.framework.domain.course.CoursePic;
 import com.xuecheng.framework.domain.course.Teachplan;
 import com.xuecheng.framework.domain.course.ext.CourseInfo;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
@@ -118,5 +119,11 @@ public class CourseController implements CourseControllerApi {
                                        @RequestParam("pic") String pic) {
         //保存课程图片
         return courseService.saveCoursePic(courseId,pic);
+    }
+
+    @Override
+    @GetMapping("/coursepic/get/{courseId}")
+    public CoursePic getCoursePic(@PathVariable("courseId") String courseId) {
+        return courseService.getCoursePic(courseId);
     }
 }
