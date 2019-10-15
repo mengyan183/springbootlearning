@@ -28,7 +28,7 @@
         dialogImageUrl: '',
         dialogVisible: false,
         fileList:[],
-        uploadval:{filetag:"course"},//上传提交的额外的数据 ，将uploadval转成key/value提交给服务器
+        uploadval:{filetag:"course",businesskey:"businesskey"},//上传提交的额外的数据 ，将uploadval转成key/value提交给服务器
         imgUrl:sysConfig.imgUrl
       }
     },
