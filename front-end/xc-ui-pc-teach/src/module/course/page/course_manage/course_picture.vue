@@ -109,9 +109,11 @@
       //课程id
       this.courseid = this.$route.params.courseid;
       //查询课程
-      courseApi.findCoursePicList(this.courseid).then(res=>{
+      courseApi.findCoursePic(this.courseid).then(res=>{
           if(res && res.pic){
-              let imgUrl = this.imgUrl+res.pic;
+            // 接口返回完整地址
+            //   let imgUrl = this.imgUrl+res.pic;
+              let imgUrl = res.pic;
               //将图片地址设置到
             this.fileList.push({name:'pic',url:imgUrl,fileId:res.pic})
           }

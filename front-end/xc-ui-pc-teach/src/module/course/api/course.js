@@ -52,8 +52,8 @@ export const addCoursePic= (courseId,pic) => {
   return http.requestPost(apiUrl+'/course/coursepic/add?courseId='+courseId+"&pic="+pic)
 }
 //查询课程图片
-export const findCoursePicList = courseId => {
-  return http.requestQuickGet(apiUrl+'/course/coursepic/list/'+courseId)
+export const findCoursePic = courseId => {
+  return http.requestQuickGet(apiUrl+'/course/coursepic/get/'+courseId)
 }
 
 //删除课程图片

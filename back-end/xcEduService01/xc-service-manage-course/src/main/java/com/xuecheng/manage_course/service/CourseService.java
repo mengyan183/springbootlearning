@@ -14,6 +14,7 @@ import com.xuecheng.manage_course.dao.CourseMapper;
 import com.xuecheng.manage_course.dao.CoursePicRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,8 @@ public class CourseService {
     private CourseMapper courseMapper;
     @Autowired
     private CoursePicRepository coursePicRepository;
-
+    @Value("${xuecheng.imagehost}")
+    private String imageHost;
 
     public Page<CourseInfo> list(Integer page, Integer size, CourseListRequest courseListRequest) {
         if (page == null || page < 1) {
@@ -70,9 +72,10 @@ public class CourseService {
         if(StringUtils.isBlank(courseId)){
             return null;
         }
-        CoursePic coursePic = new CoursePic();
-        coursePic.setCourseid(courseId);
-        //TODO 
-        return coursePicRepository.findOne(coursePic);
+        CoursePic coursePic = coursePicRepository.findById(courseId).orElse(null);
+        if (coursePic != null) {
+            coursePic.setPic(imageHost + coursePic.getPic());
+        }
+        return coursePic;
     }
 }
