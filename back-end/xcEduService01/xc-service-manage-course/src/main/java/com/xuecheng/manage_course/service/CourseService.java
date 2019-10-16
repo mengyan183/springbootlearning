@@ -100,6 +100,7 @@ public class CourseService {
      * @param courseId
      * @return
      */
+    @Transactional
     public ResponseResult deleteCoursePic(String courseId) {
         if (StringUtils.isBlank(courseId)) {
             return new ResponseResult(CommonCode.INVALID_PARAM);

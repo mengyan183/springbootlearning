@@ -43,13 +43,11 @@
       },
       //删除图片
       handleRemove(file, fileList) {
-        console.log(file)
         //调用服务端去删除课程图片信息，如果返回false，前端停止删除
         //异步调用
         return new Promise((resolve,rejct)=>{
           courseApi.deleteCoursePic(this.courseid).then(res=>{
             if(res.success){
-
                 //成功
               resolve()
             }else{
@@ -64,8 +62,6 @@
       },
       //上传成功的钩子方法
       handleSuccess(response, file, fileList){
-        console.log(response)
-//        alert('上传成功')
         //调用课程管理的保存图片接口，将图片信息保存到课程管理数据库course_pic中
         //从response得到新的图片文件的地址
         if(response.success){
