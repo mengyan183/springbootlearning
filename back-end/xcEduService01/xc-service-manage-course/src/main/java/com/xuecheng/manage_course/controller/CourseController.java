@@ -126,4 +126,10 @@ public class CourseController implements CourseControllerApi {
     public CoursePic getCoursePic(@PathVariable("courseId") String courseId) {
         return courseService.getCoursePic(courseId);
     }
+
+    @Override
+    @DeleteMapping("/coursepic/delete")
+    public ResponseResult deleteCoursePic(@RequestParam("courseId") String courseId) {
+        return courseService.deleteCoursePic(courseId);
+    }
 }

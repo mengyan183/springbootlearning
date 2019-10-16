@@ -69,4 +69,7 @@ public interface CourseControllerApi {
 
     @ApiOperation("获取课程图片")
     CoursePic getCoursePic(String courseId);
+
+    @ApiOperation("删除课程图片")
+    ResponseResult deleteCoursePic(String courseId);
 }

@@ -91,4 +91,25 @@ public class CourseService {
         }
         return coursePic;
     }
+
+    /**
+     * 删除课程图片
+     * 1: 删除课程和图片的关联关系
+     * 2: 删除 fastdfs中文件
+     *
+     * @param courseId
+     * @return
+     */
+    public ResponseResult deleteCoursePic(String courseId) {
+        if (StringUtils.isBlank(courseId)) {
+            return new ResponseResult(CommonCode.INVALID_PARAM);
+        }
+        long i = coursePicRepository.deleteByCourseid(courseId);
+        if (i > 0) {
+            //TODO : 删除 fastdfs 文件
+
+            return new ResponseResult(CommonCode.SUCCESS);
+        }
+        return new ResponseResult(CommonCode.FAIL);
+    }
 }

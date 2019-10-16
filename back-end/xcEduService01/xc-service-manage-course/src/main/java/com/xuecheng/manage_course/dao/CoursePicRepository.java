@@ -11,4 +11,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @since 2.0.0
  **/
 public interface CoursePicRepository extends JpaRepository<CoursePic, String> {
+    /**
+     * 删除课程图片
+     *
+     * @param courseId
+     * @return
+     */
+    long deleteByCourseid(String courseId);
 }
