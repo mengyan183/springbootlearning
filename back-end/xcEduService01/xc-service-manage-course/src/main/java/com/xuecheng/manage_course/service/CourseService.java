@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -45,7 +47,18 @@ public class CourseService {
         }
         // page helper 拦截 下一个 sql 拼接 limit 条件 , 并执行count查询(可以根据配置文件 开关状态 )
         PageHelper.startPage(page, size);
-        return courseMapper.findList(courseListRequest);
+        Page<CourseInfo> list = courseMapper.findList(courseListRequest);
+        if (list != null) {
+            List<CourseInfo> result = list.getResult();
+            if (!CollectionUtils.isEmpty(result)) {
+                for (CourseInfo courseInfo : result) {
+                    if (courseInfo != null && StringUtils.isNotBlank(courseInfo.getPic())) {
+                        courseInfo.setPic(imageHost + "/" + courseInfo.getPic());
+                    }
+                }
+            }
+        }
+        return list;
     }
 
     //添加课程图片
@@ -74,7 +87,7 @@ public class CourseService {
         }
         CoursePic coursePic = coursePicRepository.findById(courseId).orElse(null);
         if (coursePic != null) {
-            coursePic.setPic(imageHost + coursePic.getPic());
+            coursePic.setPic(imageHost + "/" + coursePic.getPic());
         }
         return coursePic;
     }

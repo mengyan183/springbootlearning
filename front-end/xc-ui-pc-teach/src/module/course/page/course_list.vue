@@ -17,7 +17,7 @@
       </el-col>
       <el-col :span="8" v-for="(course, index) in courses" :key="course.id" :offset="index > 0 ? 2 : 2">
         <el-card :body-style="{ padding: '10px' }">
-          <img :src="course.pic!=null?imgUrl+course.pic:'/static/images/nonepic.jpg'" class="image" height="150px">
+          <img :src="course.pic!=null?course.pic:'/static/images/nonepic.jpg'" class="image" height="150px">
           <div style="padding: 10px;">
             <span>{{course.name}}</span>
             <div class="bottom clearfix">
@@ -73,7 +73,6 @@
       //获取课程列表
       getCourse() {
         courseApi.findCourseList(this.page,this.size,{}).then((res) => {
-          console.log(res);
           if(res.success){
             this.total = res.queryResult.total;
             this.courses = res.queryResult.list;
@@ -82,7 +81,6 @@
         });
       },
       handleManage: function (id) {
-        console.log(id)
         this.$router.push({ path: '/course/manager/'+id})
       }
 
