@@ -7,6 +7,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xuecheng.framework.domain.course.CoursePic;
 import com.xuecheng.framework.domain.course.ext.CourseInfo;
+import com.xuecheng.framework.domain.course.ext.CourseView;
 import com.xuecheng.framework.domain.course.request.CourseListRequest;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.ResponseResult;
@@ -35,6 +36,13 @@ public class CourseService {
     private CourseMapper courseMapper;
     @Autowired
     private CoursePicRepository coursePicRepository;
+    @Autowired
+    private CourseBaseService courseBaseService;
+    @Autowired
+    private CourseMarketService courseMarketService;
+    @Autowired
+    private TeachplanService teachplanService;
+
     @Value("${xuecheng.imagehost}")
     private String imageHost;
 
@@ -112,5 +120,28 @@ public class CourseService {
             return new ResponseResult(CommonCode.SUCCESS);
         }
         return new ResponseResult(CommonCode.FAIL);
+    }
+
+    /**
+     * 获取 课程展示数据
+     *
+     * @author guoxing
+     * @date 2019-10-18 11:09 AM
+     * @since 2.0.0
+     **/
+    public CourseView getCourseView(String id) {
+        if (StringUtils.isBlank(id)) {
+            return null;
+        }
+        CourseView courseView = new CourseView();
+        // 课程基础信息
+        courseView.setCourseBase(courseBaseService.getCoursebaseById(id));
+        // 课程营销信息
+        courseView.setCourseMarket(courseMarketService.getCourseMarketById(id));
+        // 课程图片信息
+        courseView.setCoursePic(this.getCoursePic(id));
+        // 教学计划节点
+        courseView.setTeachplanNode(teachplanService.findTeachPlanListByTopPlan(id));
+        return courseView;
     }
 }
