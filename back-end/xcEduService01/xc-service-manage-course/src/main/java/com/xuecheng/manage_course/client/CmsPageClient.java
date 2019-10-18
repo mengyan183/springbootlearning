@@ -2,11 +2,12 @@ package com.xuecheng.manage_course.client;
 
 import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.response.CmsPageResult;
+import com.xuecheng.framework.domain.cms.response.CmsPostPageResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 /**
- *1、feignClient接口 有参数在参数必须加@PathVariable("XXX")和@RequestParam("XXX")
+ * 1、feignClient接口 有参数在参数必须加@PathVariable("XXX")和@RequestParam("XXX")
  * 2、feignClient返回值为复杂对象时其类型必须有无参构造函数。
  */
 @FeignClient(value = "xc-service-manage-cms")
@@ -30,4 +31,13 @@ public interface CmsPageClient {
      */
     @PostMapping("/save")
     CmsPageResult save(@RequestBody CmsPage cmsPage);
+
+    /**
+     * 调用课程一键发布接口
+     *
+     * @param cmsPage
+     * @return
+     */
+    @PostMapping("/postPageQuick")
+    CmsPostPageResult postPageQuick(@RequestBody CmsPage cmsPage);
 }

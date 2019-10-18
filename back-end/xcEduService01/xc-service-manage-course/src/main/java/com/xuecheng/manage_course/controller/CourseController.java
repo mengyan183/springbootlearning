@@ -46,6 +46,7 @@ public class CourseController implements CourseControllerApi {
     private CourseBaseService courseBaseService;
     @Autowired
     private CourseMarketService courseMarketService;
+
     /**
      * 根据课程id获取课程计划
      *
@@ -99,8 +100,8 @@ public class CourseController implements CourseControllerApi {
 
     @Override
     @PostMapping("/coursebase/update/{courseBaseId}")
-    public ResponseResult updateCourseBase(@PathVariable("courseBaseId") String courseBaseId,@RequestBody CourseBase courseBase) {
-        return courseBaseService.updateCourseBase(courseBaseId,courseBase);
+    public ResponseResult updateCourseBase(@PathVariable("courseBaseId") String courseBaseId, @RequestBody CourseBase courseBase) {
+        return courseBaseService.updateCourseBase(courseBaseId, courseBase);
     }
 
     @Override
@@ -111,8 +112,8 @@ public class CourseController implements CourseControllerApi {
 
     @Override
     @PostMapping("/coursemarket/edit/{courseId}")
-    public ResponseResult editCourseMarket(@PathVariable("courseId") String courseId,@RequestBody CourseMarket courseMarket) {
-        return courseMarketService.editCourseMarket(courseId,courseMarket);
+    public ResponseResult editCourseMarket(@PathVariable("courseId") String courseId, @RequestBody CourseMarket courseMarket) {
+        return courseMarketService.editCourseMarket(courseId, courseMarket);
     }
 
     @Override
@@ -120,7 +121,7 @@ public class CourseController implements CourseControllerApi {
     public ResponseResult addCoursePic(@RequestParam("courseId") String courseId,
                                        @RequestParam("pic") String pic) {
         //保存课程图片
-        return courseService.saveCoursePic(courseId,pic);
+        return courseService.saveCoursePic(courseId, pic);
     }
 
     @Override
@@ -146,4 +147,12 @@ public class CourseController implements CourseControllerApi {
     public CoursePublishResult preview(@PathVariable("id") String id) {
         return courseService.preview(id);
     }
+
+    @Override
+    @PostMapping("/publish/{id}")
+    public CoursePublishResult publish(@PathVariable("id") String courseId) {
+        return courseService.publish(courseId);
+    }
+
+
 }
