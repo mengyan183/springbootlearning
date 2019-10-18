@@ -3,7 +3,9 @@
  */
 package com.xuecheng.manage_cms.controller;
 
+import com.xuecheng.api.cms.CmsPagePreviewControllerApi;
 import com.xuecheng.manage_cms.service.PageService;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +25,8 @@ import java.nio.charset.StandardCharsets;
  * @since 2.0.0
  **/
 @Controller
-public class CmsPagePreviewController {
+@Api(value = "cms页面静态化预览接口")
+public class CmsPagePreviewController implements CmsPagePreviewControllerApi {
     @Autowired
     private PageService pageService;
 
@@ -35,6 +38,7 @@ public class CmsPagePreviewController {
      * @since 2.0.0
      **/
     @RequestMapping(value = "/cms/preview/{pageId}", method = RequestMethod.GET)
+    @Override
     public void previewPageByPageId(@PathVariable("pageId") String pageId, HttpServletResponse httpServletResponse) {
         try {
             String pageHtmlByPageId = pageService.getPageHtmlByPageId(pageId);

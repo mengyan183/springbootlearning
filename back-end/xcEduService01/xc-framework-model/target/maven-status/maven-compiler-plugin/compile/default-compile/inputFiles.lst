@@ -67,6 +67,7 @@ E:\privatecode\springbootlearning\back-end\xcEduService01\xc-framework-model\src
 E:\privatecode\springbootlearning\back-end\xcEduService01\xc-framework-model\src\main\java\com\xuecheng\framework\domain\portalview\PreViewCourseMedia.java
 E:\privatecode\springbootlearning\back-end\xcEduService01\xc-framework-model\src\main\java\com\xuecheng\framework\domain\ucenter\request\LoginRequest.java
 E:\privatecode\springbootlearning\back-end\xcEduService01\xc-framework-model\src\main\java\com\xuecheng\framework\domain\order\response\OrderResult.java
+E:\privatecode\springbootlearning\back-end\xcEduService01\xc-framework-model\src\main\java\com\xuecheng\framework\domain\course\ext\CourseView.java
 E:\privatecode\springbootlearning\back-end\xcEduService01\xc-framework-model\src\main\java\com\xuecheng\framework\domain\ucenter\ext\XcUserExt.java
 E:\privatecode\springbootlearning\back-end\xcEduService01\xc-framework-model\src\main\java\com\xuecheng\framework\domain\ucenter\XcMenu.java
 E:\privatecode\springbootlearning\back-end\xcEduService01\xc-framework-model\src\main\java\com\xuecheng\framework\domain\search\CourseSearchParam.java

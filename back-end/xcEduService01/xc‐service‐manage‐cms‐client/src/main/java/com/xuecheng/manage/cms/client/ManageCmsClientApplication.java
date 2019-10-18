@@ -22,6 +22,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = {"com.xuecheng.framework"})
 //扫描当前工程
 @ComponentScan(basePackages = {"com.xuecheng.manage.cms.client"})
+@ComponentScan(basePackages = {"com.xuecheng.api"})
 public class ManageCmsClientApplication {
     public static void main(String[] args) {
         SpringApplication.run(ManageCmsClientApplication.class, args);

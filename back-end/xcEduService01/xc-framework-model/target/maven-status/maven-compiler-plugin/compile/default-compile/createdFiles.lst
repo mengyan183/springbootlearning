@@ -55,6 +55,7 @@ com\xuecheng\framework\domain\learning\XcLearningList.class
 com\xuecheng\framework\domain\cms\CmsSite.class
 com\xuecheng\framework\domain\order\XcOrders.class
 com\xuecheng\framework\domain\course\CoursePre.class
+com\xuecheng\framework\domain\course\ext\CourseView.class
 com\xuecheng\framework\domain\cms\response\GenerateHtmlResult.class
 com\xuecheng\framework\domain\ucenter\response\AuthCode.class
 com\xuecheng\framework\domain\course\Category.class

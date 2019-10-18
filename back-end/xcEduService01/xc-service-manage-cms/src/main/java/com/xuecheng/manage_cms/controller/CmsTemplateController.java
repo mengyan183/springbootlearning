@@ -6,6 +6,7 @@ package com.xuecheng.manage_cms.controller;
 import com.xuecheng.api.cms.CmsTemplateControllerApi;
 import com.xuecheng.framework.domain.cms.CmsTemplate;
 import com.xuecheng.manage_cms.service.TemplateService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping("/cms/template")
+@Api(value = "cms模板管理接口")
 public class CmsTemplateController implements CmsTemplateControllerApi {
     @Autowired
     private TemplateService templateService;

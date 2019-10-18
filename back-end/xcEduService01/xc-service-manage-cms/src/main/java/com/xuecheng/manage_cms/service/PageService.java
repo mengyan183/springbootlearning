@@ -292,4 +292,25 @@ public class PageService {
         return cmsPage;
     }
 
+    /**
+     * 保存cms page
+     *
+     * @author guoxing
+     * @date 2019-10-18 11:45 AM
+     * @since 2.0.0
+     **/
+    public CmsPageResult save(CmsPage cmsPage) {
+        if (cmsPage == null) {
+            return new CmsPageResult(CommonCode.INVALID_PARAM, cmsPage);
+        }
+        // 根据唯一数据查询 数据 是否存在
+        CmsPage byId = cmsPageRepository.findByPageNameAndSiteIdAndPageWebPath(cmsPage.getPageName(),
+                cmsPage.getSiteId(), cmsPage.getPageWebPath());
+        if (byId != null) {
+            this.update(byId.getPageId(), cmsPage);
+        } else {
+            this.add(cmsPage);
+        }
+        return new CmsPageResult(CommonCode.SUCCESS, cmsPage);
+    }
 }

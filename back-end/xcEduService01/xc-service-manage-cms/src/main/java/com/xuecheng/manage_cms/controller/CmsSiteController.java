@@ -11,6 +11,7 @@ import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_cms.service.PageService;
 import com.xuecheng.manage_cms.service.SiteService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping("/cms/site")
+@Api(value = "cms站点管理接口")
 public class CmsSiteController implements CmsSiteControllerApi {
 
     @Autowired

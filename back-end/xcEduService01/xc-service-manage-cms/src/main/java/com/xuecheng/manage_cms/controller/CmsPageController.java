@@ -7,6 +7,8 @@ import com.xuecheng.framework.domain.cms.response.CmsPageResult;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_cms.service.PageService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
  **/
 @RestController
 @RequestMapping("/cms/page")
+@Api(value="cms页面管理接口")
 public class CmsPageController implements CmsPageControllerApi {
 
     @Autowired
@@ -24,6 +27,7 @@ public class CmsPageController implements CmsPageControllerApi {
 
     @Override
     @GetMapping("/list/{page}/{size}")
+    @ApiOperation("分页查询页面列表")
     public QueryResponseResult findList(@PathVariable("page") int page, @PathVariable("size")int size, QueryPageRequest queryPageRequest) {
 
 /*        //暂时用静态数据
@@ -44,31 +48,43 @@ public class CmsPageController implements CmsPageControllerApi {
 
     @Override
     @PostMapping("/add")
+    @ApiOperation("新增页面")
     public CmsPageResult add(@RequestBody  CmsPage cmsPage) {
         return pageService.add(cmsPage);
     }
 
     @Override
     @GetMapping("/get/{id}")
+    @ApiOperation("根据页面id查询页面信息")
     public CmsPage findById(@PathVariable("id") String id) {
         return pageService.getById(id);
     }
 
     @Override
     @PutMapping("/edit/{id}")//这里使用put方法，http 方法中put表示更新
+    @ApiOperation("修改页面")
     public CmsPageResult edit(@PathVariable("id")String id, @RequestBody CmsPage cmsPage) {
         return pageService.update(id,cmsPage);
     }
 
     @Override
     @DeleteMapping("/del/{id}")
+    @ApiOperation("删除页面")
     public ResponseResult delete(@PathVariable("id") String id) {
         return pageService.delete(id);
     }
 
     @Override
     @PostMapping("/postPage/{pageId}")
+    @ApiOperation("发布页面")
     public ResponseResult post(@PathVariable("pageId") String pageId) throws Exception {
         return pageService.postPage(pageId);
+    }
+
+    @Override
+    @PostMapping("/save")
+    @ApiOperation("保存页面")
+    public CmsPageResult save(@RequestBody CmsPage cmsPage) {
+        return pageService.save(cmsPage);
     }
 }
