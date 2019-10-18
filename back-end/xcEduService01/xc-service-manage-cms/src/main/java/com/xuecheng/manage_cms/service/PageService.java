@@ -297,6 +297,7 @@ public class PageService {
      *
      * @author guoxing
      * @date 2019-10-18 11:45 AM
+     *
      * @since 2.0.0
      **/
     public CmsPageResult save(CmsPage cmsPage) {
@@ -307,10 +308,9 @@ public class PageService {
         CmsPage byId = cmsPageRepository.findByPageNameAndSiteIdAndPageWebPath(cmsPage.getPageName(),
                 cmsPage.getSiteId(), cmsPage.getPageWebPath());
         if (byId != null) {
-            this.update(byId.getPageId(), cmsPage);
+            return this.update(byId.getPageId(), cmsPage);
         } else {
-            this.add(cmsPage);
+            return this.add(cmsPage);
         }
-        return new CmsPageResult(CommonCode.SUCCESS, cmsPage);
     }
 }

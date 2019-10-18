@@ -5,12 +5,20 @@ package com.xuecheng.manage_course.service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.xuecheng.framework.domain.cms.CmsPage;
+import com.xuecheng.framework.domain.cms.response.CmsPageResult;
+import com.xuecheng.framework.domain.course.CourseBase;
 import com.xuecheng.framework.domain.course.CoursePic;
 import com.xuecheng.framework.domain.course.ext.CourseInfo;
 import com.xuecheng.framework.domain.course.ext.CourseView;
 import com.xuecheng.framework.domain.course.request.CourseListRequest;
+import com.xuecheng.framework.domain.course.response.CourseCode;
+import com.xuecheng.framework.domain.course.response.CoursePublishResult;
+import com.xuecheng.framework.exception.ExceptionCast;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.ResponseResult;
+import com.xuecheng.manage_course.client.CmsPageClient;
+import com.xuecheng.manage_course.config.SystemConfig;
 import com.xuecheng.manage_course.dao.CourseMapper;
 import com.xuecheng.manage_course.dao.CoursePicRepository;
 import org.apache.commons.lang3.StringUtils;
@@ -42,6 +50,11 @@ public class CourseService {
     private CourseMarketService courseMarketService;
     @Autowired
     private TeachplanService teachplanService;
+
+    @Autowired
+    private CmsPageClient cmsPageClient;
+    @Autowired
+    private SystemConfig systemConfig;
 
     @Value("${xuecheng.imagehost}")
     private String imageHost;
@@ -143,5 +156,47 @@ public class CourseService {
         // 教学计划节点
         courseView.setTeachplanNode(teachplanService.findTeachPlanListByTopPlan(id));
         return courseView;
+    }
+
+    /**
+     * 课程预览
+     *
+     * @author guoxing
+     * @date 2019-10-18 3:34 PM
+     * @since 2.0.0
+     **/
+    public CoursePublishResult preview(String courseId) {
+        if (StringUtils.isBlank(courseId)) {
+            ExceptionCast.cast(CourseCode.COURSE_PUBLISH_COURSEIDISNULL);
+        }
+        CourseBase courseBase = courseBaseService.getCoursebaseById(courseId);
+        if (courseBase == null) {
+            ExceptionCast.cast(CourseCode.COURSE_NOT_EXIST);
+        }
+        // 请求 cms 添加页面
+        CmsPage cmsPage = new CmsPage();
+        //站点 课程预览站点
+        cmsPage.setSiteId(systemConfig.getPublish_siteId());
+        //模板
+        cmsPage.setTemplateId(systemConfig.getPublish_templateId());
+        //页面名称
+        cmsPage.setPageName(courseId + ".html");
+        //页面别名
+        cmsPage.setPageAliase(courseBase.getName());
+        //页面访问路径
+        cmsPage.setPageWebPath(systemConfig.getPublish_page_webpath());
+        //页面存储路径
+        cmsPage.setPagePhysicalPath(systemConfig.getPublish_page_physicalpath());
+        //数据url
+        cmsPage.setDataUrl(systemConfig.getPublish_dataUrlPre() + courseId);
+        CmsPageResult cmsPageResult = cmsPageClient.save(cmsPage);
+        if (cmsPageResult == null || !cmsPageResult.isSuccess()) {
+            ExceptionCast.cast(CommonCode.FAIL);
+        }
+        // 拼装页面预览URL
+        cmsPage = cmsPageResult.getCmsPage();
+        String pageId = cmsPage.getPageId();
+        // 返回 对象 (包含 页面 预览 url地址  )
+        return new CoursePublishResult(CommonCode.SUCCESS, systemConfig.getPreviewUrl() + pageId);
     }
 }
