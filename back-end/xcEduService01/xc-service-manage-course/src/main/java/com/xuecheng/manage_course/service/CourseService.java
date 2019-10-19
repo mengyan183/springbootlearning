@@ -3,15 +3,19 @@
  */
 package com.xuecheng.manage_course.service;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.response.CmsPageResult;
 import com.xuecheng.framework.domain.cms.response.CmsPostPageResult;
 import com.xuecheng.framework.domain.course.CourseBase;
+import com.xuecheng.framework.domain.course.CourseMarket;
 import com.xuecheng.framework.domain.course.CoursePic;
+import com.xuecheng.framework.domain.course.CoursePub;
 import com.xuecheng.framework.domain.course.ext.CourseInfo;
 import com.xuecheng.framework.domain.course.ext.CourseView;
+import com.xuecheng.framework.domain.course.ext.TeachplanNode;
 import com.xuecheng.framework.domain.course.request.CourseListRequest;
 import com.xuecheng.framework.domain.course.response.CourseCode;
 import com.xuecheng.framework.domain.course.response.CoursePublishResult;
@@ -22,13 +26,17 @@ import com.xuecheng.manage_course.client.CmsPageClient;
 import com.xuecheng.manage_course.config.SystemConfig;
 import com.xuecheng.manage_course.dao.CourseMapper;
 import com.xuecheng.manage_course.dao.CoursePicRepository;
+import com.xuecheng.manage_course.dao.CoursePubRepository;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,6 +64,8 @@ public class CourseService {
     private CmsPageClient cmsPageClient;
     @Autowired
     private SystemConfig systemConfig;
+    @Autowired
+    private CoursePubRepository coursePubRepository;
 
     @Value("${xuecheng.imagehost}")
     private String imageHost;
@@ -238,10 +248,48 @@ public class CourseService {
             // 更改课程状态
             courseBase.setStatus("202002");
             ResponseResult responseResult = courseBaseService.updateCourseBase(courseId, courseBase);
-            if(responseResult ==null || !responseResult.isSuccess()){
+            if (responseResult == null || !responseResult.isSuccess()) {
                 ExceptionCast.cast(CommonCode.FAIL);
             }
-            return new CoursePublishResult(CommonCode.SUCCESS,cmsPostPageResult.getPageUrl());
+
+            //搜索相关
+            // 将课程相关数据 保存到coursepub中
+            CoursePub coursePub = new CoursePub();
+            // course base
+            BeanUtils.copyProperties(courseBase, coursePub);
+            // course pic
+            CoursePic coursePic = this.getCoursePic(courseId);
+            BeanUtils.copyProperties(coursePic, coursePub);
+            // course market
+            CourseMarket courseMarketById = courseMarketService.getCourseMarketById(courseId);
+            BeanUtils.copyProperties(courseMarketById, coursePub);
+            // course plan
+            TeachplanNode teachPlanListByTopPlan = teachplanService.findTeachPlanListByTopPlan(courseId);
+            coursePub.setTeachplan(JSON.toJSONString(teachPlanListByTopPlan));
+
+            if (StringUtils.isNotEmpty(courseId)) {
+                ExceptionCast.cast(CourseCode.COURSE_PUBLISH_COURSEIDISNULL);
+            }
+            CoursePub coursePubNew = null;
+            Optional<CoursePub> coursePubOptional = coursePubRepository.findById(courseId);
+            if (coursePubOptional.isPresent()) {
+                coursePubNew = coursePubOptional.get();
+            }
+            if (coursePubNew == null) {
+                coursePubNew = new CoursePub();
+            }
+            BeanUtils.copyProperties(coursePub, coursePubNew); //设置主键
+            coursePubNew.setId(courseId);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY‐MM‐dd HH:mm:ss");
+            //更新时间戳为最新时间
+            coursePub.setTimestamp(new Date());
+            String date = simpleDateFormat.format(new Date());
+            coursePub.setPubTime(date);
+            //保存到数据库
+            coursePubRepository.save(coursePub);
+            // ... 还有剩余步骤
+
+            return new CoursePublishResult(CommonCode.SUCCESS, cmsPostPageResult.getPageUrl());
         } else {
             ExceptionCast.cast(CommonCode.FAIL);
         }

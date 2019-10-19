@@ -8,3 +8,6 @@ xuecheng:
     hostlist: ${eshostlist:127.0.0.1:9201,127.0.0.1:9202,127.0.0.1:9203} #多个结点中间用逗号分隔
     username: ${username:elastic}
     password: ${password:changeme}
+  course:
+    index: xc_course
+    source_field: id,name,grade,mt,st,charge,valid,pic,qq,price,price_old,status,studymodel,teachmode,expires,pub_time,start_time,end_time

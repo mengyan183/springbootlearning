@@ -1,5 +1,6 @@
 package com.xuecheng.search.config;
 
+import lombok.Data;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
  * @version 1.0
  **/
 @Configuration
+@Data
 public class ElasticsearchConfig {
 
     @Value("${xuecheng.elasticsearch.hostlist}")
@@ -25,6 +27,10 @@ public class ElasticsearchConfig {
     private String username;
     @Value("${xuecheng.elasticsearch.password}")
     private String password;
+    @Value("${xuecheng.course.index}")
+    private String courseIndex;
+    @Value("${xuecheng.course.source_field}")
+    private String sourceField;
 
     @Bean
     public CredentialsProvider credentialsProvider() {
@@ -67,6 +73,6 @@ public class ElasticsearchConfig {
             return httpAsyncClientBuilder.setDefaultCredentialsProvider(credentialsProvider());
         });
         return restClientBuilder.build();
-        }
-
     }
+
+}
