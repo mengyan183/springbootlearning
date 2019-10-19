@@ -1,0 +1,10 @@
+server:
+  port: ${port:40100}
+spring:
+  application:
+    name: xc-search-service
+xuecheng:
+  elasticsearch:
+    hostlist: ${eshostlist:127.0.0.1:9201,127.0.0.1:9202,127.0.0.1:9203} #多个结点中间用逗号分隔
+    username: ${username:elastic}
+    password: ${password:changeme}
