@@ -1,17 +1,20 @@
 package com.xuecheng.manage_media.service;
 
+import com.alibaba.fastjson.JSON;
 import com.xuecheng.framework.domain.media.MediaFile;
 import com.xuecheng.framework.domain.media.response.CheckChunkResult;
 import com.xuecheng.framework.domain.media.response.MediaCode;
 import com.xuecheng.framework.exception.ExceptionCast;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.ResponseResult;
+import com.xuecheng.manage_media.config.RabbitMQConfig;
 import com.xuecheng.manage_media.config.SystemConfig;
 import com.xuecheng.manage_media.dao.MediaFileRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +32,10 @@ public class MediaUploadService {
     private MediaFileRepository mediaFileRepository;
     @Autowired
     private SystemConfig systemConfig;
-
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+    @Autowired
+    private RabbitMQConfig rabbitMQConfig;
 
     /**
      * 文件上传注册
@@ -203,6 +209,16 @@ public class MediaUploadService {
         //状态为上传成功
         mediaFile.setFileStatus("301002");
         MediaFile save = mediaFileRepository.save(mediaFile);
+
+        try {
+            // 向MQ发送视频处理消息
+            HashMap<String, String> stringStringHashMap = new HashMap<>();
+            stringStringHashMap.put("mediaId", fileMd5);
+            rabbitTemplate.convertAndSend(rabbitMQConfig.EX_MEDIA_PROCESSTASK, rabbitMQConfig.routingkey_media_video, JSON.toJSONString(stringStringHashMap));
+        } catch (Exception e) {
+            log.error("mq消息发送失败");
+            ExceptionCast.cast(CommonCode.FAIL);
+        }
         return new ResponseResult(CommonCode.SUCCESS);
     }
 

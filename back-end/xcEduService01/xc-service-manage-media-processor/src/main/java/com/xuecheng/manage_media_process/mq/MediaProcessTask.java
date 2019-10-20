@@ -13,7 +13,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
@@ -37,9 +39,9 @@ public class MediaProcessTask {
      */
     @RabbitListener(queues = "${xc-service-manage-media.mq.queue-media-video-processor}")
     public void receiveMediaProcessTask(String msg) throws FileNotFoundException {
-//        File file = ResourceUtils.getFile("classpath:ffmpeg");
-//        String ffmpeg_path =file.getAbsolutePath();
-        String ffmpeg_path = systemConfig.getFfmpegPath();
+        File file = ResourceUtils.getFile("classpath:ffmpeg");
+        String ffmpeg_path =file.getAbsolutePath();
+//        String ffmpeg_path = systemConfig.getFfmpegPath();
         String serverPath = systemConfig.getUploadVideoLocation();
         Map msgMap = JSON.parseObject(msg, Map.class);
         log.info("receive media process task msg :{} ", msgMap);
