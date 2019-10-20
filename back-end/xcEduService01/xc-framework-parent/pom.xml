@@ -26,6 +26,7 @@
         <module>../xc-govern-center</module>
         <module>../xc-service-search</module>
         <module>../xc-service-manage-media</module>
+        <module>../xc-service-manage-media-processor</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>

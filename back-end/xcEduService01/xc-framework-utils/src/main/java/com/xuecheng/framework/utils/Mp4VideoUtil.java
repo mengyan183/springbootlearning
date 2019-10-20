@@ -38,7 +38,7 @@ public class Mp4VideoUtil extends VideoUtil {
         /*
         ffmpeg.exe -i  lucene.avi -c:v libx264 -s 1280x720 -pix_fmt yuv420p -b:a 63k -b:v 753k -r 18 .\lucene.mp4
          */
-        List<String> commend = new ArrayList<String>();
+        List<String> commend = new ArrayList<>();
         //commend.add("D:\\Program Files\\ffmpeg-20180227-fa0c9d6-win64-static\\bin\\ffmpeg.exe");
         commend.add(ffmpeg_path);
         commend.add("-i");
