@@ -23,6 +23,14 @@ public class TestEsCourseService {
     @Test
     public void list() {
         CourseSearchParam courseSearchParam = new CourseSearchParam();
+        courseSearchParam.setMt("1-3");
+        courseSearchParam.setSt("1-3-2");
+        courseSearchParam.setGrade("200001");
+//        courseSearchParam.setPrice_min();
+//        courseSearchParam.setPrice_max();
+//        courseSearchParam.setSort();
+//        courseSearchParam.setFilter();
+
         courseSearchParam.setKeyword("开发");
         QueryResponseResult<CoursePub> list = esCourseService.list(1, 10, courseSearchParam);
         log.info(list.toString());

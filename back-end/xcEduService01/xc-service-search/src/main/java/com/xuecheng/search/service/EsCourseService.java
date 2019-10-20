@@ -17,6 +17,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +74,28 @@ public class EsCourseService {
             // 采用  multiMatchQuery
             boolQueryBuilder.must(multiMatchQueryBuilder);
         }
+        //过滤
+        if (StringUtils.isNotBlank(courseSearchParam.getMt())) {
+            boolQueryBuilder.filter(QueryBuilders.termQuery("mt", courseSearchParam.getMt()));
+        }
+        if (StringUtils.isNotBlank(courseSearchParam.getSt())) {
+            boolQueryBuilder.filter(QueryBuilders.termQuery("st", courseSearchParam.getSt()));
+        }
+        if (StringUtils.isNotBlank(courseSearchParam.getGrade())) {
+            boolQueryBuilder.filter(QueryBuilders.termQuery("grade", courseSearchParam.getGrade()));
+        }
+
         searchSourceBuilder.query(boolQueryBuilder);
+
+        //高亮设置
+        HighlightBuilder highlightBuilder = new HighlightBuilder();
+        highlightBuilder.preTags("<font class='eslight'>");
+        highlightBuilder.postTags("</font>");
+        //设置高亮字段
+        highlightBuilder.fields().add(new HighlightBuilder.Field("name"));
+        searchSourceBuilder.highlighter(highlightBuilder);
+
+
         SearchRequest searchRequest = new SearchRequest(elasticsearchConfig.getCourseIndex());
         searchRequest.source(searchSourceBuilder);
         QueryResult queryResult = new QueryResult();
