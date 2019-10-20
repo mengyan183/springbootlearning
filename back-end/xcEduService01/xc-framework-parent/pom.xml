@@ -25,6 +25,7 @@
         <module>../xc-service-base-filesystem</module>
         <module>../xc-govern-center</module>
         <module>../xc-service-search</module>
+        <module>../xc-service-manage-media</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
