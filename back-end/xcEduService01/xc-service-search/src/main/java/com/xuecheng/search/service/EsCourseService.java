@@ -11,6 +11,7 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -18,6 +19,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -111,6 +113,18 @@ public class EsCourseService {
                     Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
                     CoursePub coursePub = new CoursePub();
                     String name = (String) sourceAsMap.get("name");
+                    //取出高亮字段
+                    Map<String, HighlightField> highlightFields = searchHit.getHighlightFields();
+                    if (highlightFields.get("name") != null) {
+                        HighlightField highlightField = highlightFields.get("name");
+                        Text[] fragments = highlightField.fragments();
+                        StringBuilder stringBuffer = new StringBuilder();
+                        for (Text text : fragments) {
+                            stringBuffer.append(text);
+                        }
+                        name = stringBuffer.toString();
+                    }
+
                     coursePub.setName(name);
                     //图片
                     String pic = (String) sourceAsMap.get("pic");
@@ -134,6 +148,7 @@ public class EsCourseService {
                         e.printStackTrace();
                     }
                     coursePub.setPrice_old(price_old);
+                    coursePub.setId(searchHit.getId());
                     coursePubs.add(coursePub);
                 }
             }
