@@ -8,5 +8,5 @@ export const media_list = (page,size,params) => {
   //params为json格式
   //使用querystring将json对象转成key/value串
   let querys = querystring.stringify(params)
-  return http.requestQuickGet(apiUrl+'/media/file/list/'+page+'/'+size+'/?'+querys)
+  return http.requestQuickGet(apiUrl+'/media/file/findList/'+page+'/'+size+'/?'+querys)
 }
