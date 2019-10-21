@@ -37,7 +37,8 @@ public class MediaProcessTask {
      *
      * @param msg
      */
-    @RabbitListener(queues = "${xc-service-manage-media.mq.queue-media-video-processor}")
+    // queues 注入指定的监听队列, containerFactory 设置 自定义监听工厂
+    @RabbitListener(queues = "${xc-service-manage-media.mq.queue-media-video-processor}", containerFactory = "customContainerFactory")
     public void receiveMediaProcessTask(String msg) throws FileNotFoundException {
         File file = ResourceUtils.getFile("classpath:ffmpeg");
         String ffmpeg_path =file.getAbsolutePath();
