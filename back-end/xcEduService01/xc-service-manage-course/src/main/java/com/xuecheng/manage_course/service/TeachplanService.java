@@ -5,6 +5,7 @@ package com.xuecheng.manage_course.service;
 
 import com.xuecheng.framework.domain.course.CourseBase;
 import com.xuecheng.framework.domain.course.Teachplan;
+import com.xuecheng.framework.domain.course.TeachplanMedia;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
 import com.xuecheng.framework.exception.ExceptionCast;
 import com.xuecheng.framework.model.response.CommonCode;
@@ -12,6 +13,7 @@ import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_course.dao.CourseBaseRepository;
 import com.xuecheng.manage_course.dao.TeachplanMapper;
 import com.xuecheng.manage_course.dao.TeachplanRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,7 @@ import java.util.Optional;
  * @since 2.0.0
  **/
 @Service
+@Slf4j
 public class TeachplanService {
     private static Logger LOGGER = LoggerFactory.getLogger(TeachplanService.class);
 
@@ -42,6 +45,8 @@ public class TeachplanService {
     private CourseBaseRepository courseBaseRepository;
     @Autowired
     private TeachplanRepository teachplanRepository;
+    @Autowired
+    private TeachplanMediaService teachplanMediaService;
 
     /**
      * 根据课程id获取课程计划及其子计划 ;
@@ -72,6 +77,17 @@ public class TeachplanService {
             return;
         }
         BeanUtils.copyProperties(teachplan, teachplanNode);
+        if ("3".equals(teachplan.getGrade())) {
+            // 查询该课程计划所关联的媒资信息
+            TeachplanMedia teachplanMedia = teachplanMediaService.findById(teachplan.getId());
+            if (teachplanMedia != null) {
+                teachplanNode.setMediaId(teachplanMedia.getMediaId());
+                teachplanNode.setMediaFileOriginalName(teachplanMedia.getMediaFileOriginalName());
+            } else {
+                log.error("未找到该媒资信息;teachPlanId:{}", teachplan.getId());
+            }
+        }
+
         // 获取 其下面的所有子节点
         List<Teachplan> teachplans = teachplanMapper.listByParentId(teachplan.getId());
         if (!CollectionUtils.isEmpty(teachplans)) {

@@ -330,7 +330,7 @@ public class CourseService {
         one.setMediaFileOriginalName(teachplanMedia.getMediaFileOriginalName());
         one.setMediaId(teachplanMedia.getMediaId());
         one.setMediaUrl(teachplanMedia.getMediaUrl());
-        teachplanMediaRepository.save(one);
+        TeachplanMedia save = teachplanMediaRepository.save(one);
         return new ResponseResult(CommonCode.SUCCESS);
     }
 }
