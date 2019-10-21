@@ -29,8 +29,12 @@ public class ElasticsearchConfig {
     private String password;
     @Value("${xuecheng.course.index}")
     private String courseIndex;
+    @Value("${xuecheng.course_media.index}")
+    private String courseMediaIndex;
     @Value("${xuecheng.course.source_field}")
     private String sourceField;
+    @Value("${xuecheng.course_media.source_field}")
+    private String courseMediaSourceField;
 
     @Bean
     public CredentialsProvider credentialsProvider() {

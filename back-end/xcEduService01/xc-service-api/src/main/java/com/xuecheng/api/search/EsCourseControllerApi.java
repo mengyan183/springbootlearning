@@ -1,6 +1,7 @@
 package com.xuecheng.api.search;
 
 import com.xuecheng.framework.domain.course.CoursePub;
+import com.xuecheng.framework.domain.course.TeachplanMediaPub;
 import com.xuecheng.framework.domain.search.CourseSearchParam;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import io.swagger.annotations.Api;
@@ -19,4 +20,7 @@ public interface EsCourseControllerApi {
 
     @ApiOperation("根据id查询课程信息")
     Map<String,CoursePub> listAll(String id) throws IOException;
+
+    @ApiOperation("根据课程计划查询媒资信息")
+    TeachplanMediaPub getmedia(String teachplanId);
 }
