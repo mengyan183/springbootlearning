@@ -21,10 +21,7 @@ import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_course.client.CmsPageClient;
 import com.xuecheng.manage_course.config.SystemConfig;
-import com.xuecheng.manage_course.dao.CourseMapper;
-import com.xuecheng.manage_course.dao.CoursePicRepository;
-import com.xuecheng.manage_course.dao.CoursePubRepository;
-import com.xuecheng.manage_course.dao.TeachplanMediaRepository;
+import com.xuecheng.manage_course.dao.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -38,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * CourseService
@@ -66,6 +64,8 @@ public class CourseService {
     private SystemConfig systemConfig;
     @Autowired
     private CoursePubRepository coursePubRepository;
+    @Autowired
+    private TeachplanMediaPubRepository teachplanMediaPubRepository;
 
     @Autowired
     private TeachplanMediaRepository teachplanMediaRepository;
@@ -290,6 +290,19 @@ public class CourseService {
             coursePub.setPubTime(date);
             //保存到数据库
             coursePubRepository.save(coursePub);
+            // 向teachPlanMediaPub中保存信息
+            // 删除 teachPlanMediaPub 保存的课程信息
+            teachplanMediaPubRepository.deleteByCourseId(courseId);
+            // 查询 teachPlanMedia 课程信息
+            List<TeachplanMedia> teachplanMediaList = teachplanMediaRepository.findByCourseId(courseId);
+            List<TeachplanMediaPub> collect = teachplanMediaList.stream().map(teachplanMedia -> {
+                TeachplanMediaPub teachplanMediaPub = new TeachplanMediaPub();
+                BeanUtils.copyProperties(teachplanMedia, teachplanMediaPub);
+                teachplanMediaPub.setTimestamp(new Date());
+                return teachplanMediaPub;
+            }).collect(Collectors.toList());
+            // 保存数据
+            teachplanMediaPubRepository.saveAll(collect);
             // ... 还有剩余步骤
 
             return new CoursePublishResult(CommonCode.SUCCESS, cmsPostPageResult.getPageUrl());

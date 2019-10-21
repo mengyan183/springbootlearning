@@ -1,5 +1,6 @@
 package com.xuecheng.search.service;
 
+import com.alibaba.fastjson.JSON;
 import com.xuecheng.framework.domain.course.CoursePub;
 import com.xuecheng.framework.domain.search.CourseSearchParam;
 import com.xuecheng.framework.model.response.CommonCode;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -158,5 +160,47 @@ public class EsCourseService {
             e.printStackTrace();
         }
         return new QueryResponseResult<>(CommonCode.SUCCESS, queryResult);
+    }
+
+    /**
+     * 根据课程id查询课程所有信息
+     *
+     * @param courseId
+     * @return
+     */
+    public Map<String, CoursePub> listAll(String courseId) throws IOException {
+        HashMap<String, CoursePub> stringCoursePubHashMap = new HashMap<>();
+        if (StringUtils.isBlank(courseId)) {
+            return stringCoursePubHashMap;
+        }
+        SearchRequest searchRequest = new SearchRequest(elasticsearchConfig.getCourseIndex());
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(QueryBuilders.termQuery("_id", courseId));
+        SearchResponse search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        SearchHits hits = search.getHits();
+        long value = hits.getTotalHits().value;
+        if (value < 1) {
+            return stringCoursePubHashMap;
+        }
+        for (SearchHit searchHit : hits) {
+            if (searchHit != null) {
+                Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
+                String name = (String) sourceAsMap.get("name");
+                String grade = (String) sourceAsMap.get("grade");
+                String charge = (String) sourceAsMap.get("charge");
+                String pic = (String) sourceAsMap.get("pic");
+                String description = (String) sourceAsMap.get("description");
+                String teachplan = (String) sourceAsMap.get("teachplan");
+                CoursePub coursePub = new CoursePub();
+                coursePub.setId(courseId);
+                coursePub.setName(name);
+                coursePub.setPic(pic);
+                coursePub.setGrade(grade);
+                coursePub.setTeachplan(teachplan);
+                coursePub.setDescription(description);
+                stringCoursePubHashMap.put(courseId, coursePub);
+            }
+        }
+        return stringCoursePubHashMap;
     }
 }

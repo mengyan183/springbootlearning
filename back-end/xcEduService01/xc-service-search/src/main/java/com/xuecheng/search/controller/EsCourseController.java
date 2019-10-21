@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @Api(value = "课程搜索", tags = {"课程搜索"})
@@ -26,5 +27,11 @@ public class EsCourseController implements EsCourseControllerApi {
     public QueryResponseResult<CoursePub> list(@PathVariable("page") int page,
                                                @PathVariable("size") int size, CourseSearchParam courseSearchParam) throws IOException {
         return esCourseService.list(page, size, courseSearchParam);
+    }
+
+    @Override
+    @GetMapping("/getall/{id}")
+    public Map<String, CoursePub> listAll(@PathVariable("id") String id) throws IOException {
+        return esCourseService.listAll(id);
     }
 }
