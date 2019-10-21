@@ -9,10 +9,7 @@ import com.github.pagehelper.PageHelper;
 import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.response.CmsPageResult;
 import com.xuecheng.framework.domain.cms.response.CmsPostPageResult;
-import com.xuecheng.framework.domain.course.CourseBase;
-import com.xuecheng.framework.domain.course.CourseMarket;
-import com.xuecheng.framework.domain.course.CoursePic;
-import com.xuecheng.framework.domain.course.CoursePub;
+import com.xuecheng.framework.domain.course.*;
 import com.xuecheng.framework.domain.course.ext.CourseInfo;
 import com.xuecheng.framework.domain.course.ext.CourseView;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
@@ -27,6 +24,8 @@ import com.xuecheng.manage_course.config.SystemConfig;
 import com.xuecheng.manage_course.dao.CourseMapper;
 import com.xuecheng.manage_course.dao.CoursePicRepository;
 import com.xuecheng.manage_course.dao.CoursePubRepository;
+import com.xuecheng.manage_course.dao.TeachplanMediaRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +47,7 @@ import java.util.Optional;
  * @since 2.0.0
  **/
 @Service
+@Slf4j
 public class CourseService {
     @Autowired
     private CourseMapper courseMapper;
@@ -66,6 +66,9 @@ public class CourseService {
     private SystemConfig systemConfig;
     @Autowired
     private CoursePubRepository coursePubRepository;
+
+    @Autowired
+    private TeachplanMediaRepository teachplanMediaRepository;
 
     @Value("${xuecheng.imagehost}")
     private String imageHost;
@@ -294,5 +297,40 @@ public class CourseService {
             ExceptionCast.cast(CommonCode.FAIL);
         }
         return null;
+    }
+
+    /**
+     * 保存课程计划 和 媒资数据 关联关系
+     *
+     * @param teachplanMedia
+     * @return
+     */
+    public ResponseResult savemedia(TeachplanMedia teachplanMedia) {
+        if (teachplanMedia == null || StringUtils.isBlank(teachplanMedia.getTeachplanId())) {
+            ExceptionCast.cast(CommonCode.INVALID_PARAM);
+        }
+        // 1: 判断课程计划层级是否为3
+        String teachplanId = teachplanMedia.getTeachplanId();
+        Teachplan teachplan = teachplanService.findById(teachplanId);
+        if (teachplan == null) {
+            log.error("未找到该课程计划:{}", teachplanId);
+            ExceptionCast.cast(CommonCode.INVALID_PARAM);
+        }
+        String grade = teachplan.getGrade();
+        if (!"3".equals(grade)) {
+            log.error("三级课程计划才可以关联媒资");
+            ExceptionCast.cast(CommonCode.INVALID_PARAM);
+        }
+        Optional<TeachplanMedia> teachplanMediaOptional = teachplanMediaRepository.findById(teachplanId);
+        // 如果查询不存在,创建新的对象
+        TeachplanMedia one = teachplanMediaOptional.orElseGet(TeachplanMedia::new);
+        //保存媒资信息与课程计划信息
+        one.setTeachplanId(teachplanId);
+        one.setCourseId(teachplanMedia.getCourseId());
+        one.setMediaFileOriginalName(teachplanMedia.getMediaFileOriginalName());
+        one.setMediaId(teachplanMedia.getMediaId());
+        one.setMediaUrl(teachplanMedia.getMediaUrl());
+        teachplanMediaRepository.save(one);
+        return new ResponseResult(CommonCode.SUCCESS);
     }
 }

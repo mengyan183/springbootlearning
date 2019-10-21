@@ -5,10 +5,7 @@ package com.xuecheng.manage_course.controller;
 
 import com.github.pagehelper.Page;
 import com.xuecheng.api.course.CourseControllerApi;
-import com.xuecheng.framework.domain.course.CourseBase;
-import com.xuecheng.framework.domain.course.CourseMarket;
-import com.xuecheng.framework.domain.course.CoursePic;
-import com.xuecheng.framework.domain.course.Teachplan;
+import com.xuecheng.framework.domain.course.*;
 import com.xuecheng.framework.domain.course.ext.CourseInfo;
 import com.xuecheng.framework.domain.course.ext.CourseView;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
@@ -154,5 +151,9 @@ public class CourseController implements CourseControllerApi {
         return courseService.publish(courseId);
     }
 
-
+    @Override
+    @PostMapping("/savemedia")
+    public ResponseResult savemedia(@RequestBody TeachplanMedia teachplanMedia) {
+        return courseService.savemedia(teachplanMedia);
+    }
 }

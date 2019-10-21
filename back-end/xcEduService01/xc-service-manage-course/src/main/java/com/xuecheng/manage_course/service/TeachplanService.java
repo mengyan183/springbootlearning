@@ -136,4 +136,18 @@ public class TeachplanService {
         teachplanRepository.save(teachplan);
         return ResponseResult.SUCCESS();
     }
+
+    /**
+     * 查询课程计划
+     *
+     * @param teachplanId
+     * @return
+     */
+    public Teachplan findById(String teachplanId) {
+        if (StringUtils.isBlank(teachplanId)) {
+            return null;
+        }
+        Optional<Teachplan> byId = teachplanRepository.findById(teachplanId);
+        return byId.orElse(null);
+    }
 }
