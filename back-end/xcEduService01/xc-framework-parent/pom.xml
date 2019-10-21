@@ -27,6 +27,7 @@
         <module>../xc-service-search</module>
         <module>../xc-service-manage-media</module>
         <module>../xc-service-manage-media-processor</module>
+        <module>../xc-service-learning</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
@@ -36,7 +37,7 @@
         <mybatis-spring-boot.version>1.3.1</mybatis-spring-boot.version>
         <mybatis.version>3.4.5</mybatis.version>
         <druid.version>1.1.6</druid.version>
-        <mysql-connector-java.version>5.1.45</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.17</mysql-connector-java.version>
         <commons-io.version>2.6</commons-io.version>
         <org.apache.commons.io.version>1.3.2</org.apache.commons.io.version>
         <commons-fileupload.version>1.3.3</commons-fileupload.version>
