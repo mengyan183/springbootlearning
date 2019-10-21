@@ -67,7 +67,7 @@ public class MediaFileService {
         // 组装查询条件
         Example<MediaFile> mediaFileExample = Example.of(mediaFile, exampleMatcher);
         // 分页查询
-        Page<MediaFile> all = mediaFileRepository.findAll(mediaFileExample, PageRequest.of(page, size));
+        Page<MediaFile> all = mediaFileRepository.findAll(mediaFileExample, PageRequest.of(page - 1, size));
         QueryResult<MediaFile> mediaFileQueryResult = new QueryResult<>();
         mediaFileQueryResult.setTotal(all.getTotalElements());
         mediaFileQueryResult.setList(all.getContent());

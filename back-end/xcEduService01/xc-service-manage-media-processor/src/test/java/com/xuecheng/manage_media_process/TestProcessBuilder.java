@@ -20,6 +20,8 @@ import java.io.*;
 @Slf4j
 public class TestProcessBuilder {
 
+    private static final String SYSTEM = System.getProperty("os.name");
+
     /**
      * 使用processbuilder 调用第三方程序
      *
@@ -27,7 +29,7 @@ public class TestProcessBuilder {
      */
     @Test
     public void testProcessBuilder() throws IOException {
-
+        log.info(SYSTEM);
         //创建ProcessBuilder对象
         ProcessBuilder processBuilder = new ProcessBuilder();
         //设置执行的第三方程序(命令)
@@ -60,7 +62,15 @@ public class TestProcessBuilder {
     @Test
     public void testProcessMp4() throws FileNotFoundException {
         //String ffmpeg_path, String video_path, String mp4_name, String mp4folder_path
-        File file = ResourceUtils.getFile("classpath:ffmpeg");
+        File file;
+        if (SYSTEM.contains("Windows")) {
+            file = ResourceUtils.getFile("classpath:ffmpeg.exe");
+        } else if (SYSTEM.contains("Mac")) {
+            file = ResourceUtils.getFile("classpath:ffmpeg");
+        } else {
+            // TODO linux
+            file = ResourceUtils.getFile("classpath:ffmpeg");
+        }
         String absolutePath = file.getAbsolutePath();
         log.info(absolutePath);
 //        //ffmpeg的路径

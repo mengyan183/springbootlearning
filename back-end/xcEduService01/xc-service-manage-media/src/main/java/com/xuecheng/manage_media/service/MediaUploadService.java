@@ -214,7 +214,7 @@ public class MediaUploadService {
             // 向MQ发送视频处理消息
             HashMap<String, String> stringStringHashMap = new HashMap<>();
             stringStringHashMap.put("mediaId", fileMd5);
-            rabbitTemplate.convertAndSend(rabbitMQConfig.EX_MEDIA_PROCESSTASK, rabbitMQConfig.routingkey_media_video, JSON.toJSONString(stringStringHashMap));
+            rabbitTemplate.convertAndSend(RabbitMQConfig.EX_MEDIA_PROCESSTASK, rabbitMQConfig.routingkey_media_video, JSON.toJSONString(stringStringHashMap));
         } catch (Exception e) {
             log.error("mq消息发送失败");
             ExceptionCast.cast(CommonCode.FAIL);

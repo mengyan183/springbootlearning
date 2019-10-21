@@ -5,7 +5,6 @@ import com.xuecheng.framework.domain.media.MediaFile;
 import com.xuecheng.framework.domain.media.MediaFileProcess_m3u8;
 import com.xuecheng.framework.utils.HlsVideoUtil;
 import com.xuecheng.framework.utils.Mp4VideoUtil;
-import com.xuecheng.manage_media_process.config.RabbitMQConfig;
 import com.xuecheng.manage_media_process.config.SystemConfig;
 import com.xuecheng.manage_media_process.dao.MediaFileRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -26,11 +25,10 @@ import java.util.Optional;
 public class MediaProcessTask {
 
     @Autowired
-    private RabbitMQConfig rabbitMQConfig;
-    @Autowired
     private MediaFileRepository mediaFileRepository;
     @Autowired
     private SystemConfig systemConfig;
+    private static final String SYSTEM = System.getProperty("os.name");
 
     /**
      * mq 监听 视频处理队列
@@ -40,9 +38,16 @@ public class MediaProcessTask {
     // queues 注入指定的监听队列, containerFactory 设置 自定义监听工厂
     @RabbitListener(queues = "${xc-service-manage-media.mq.queue-media-video-processor}", containerFactory = "customContainerFactory")
     public void receiveMediaProcessTask(String msg) throws FileNotFoundException {
-        File file = ResourceUtils.getFile("classpath:ffmpeg");
+        File file;
+        if (SYSTEM.contains("Windows")) {
+            file = ResourceUtils.getFile("classpath:ffmpeg.exe");
+        } else if (SYSTEM.contains("Mac")) {
+            file = ResourceUtils.getFile("classpath:ffmpeg");
+        } else {
+            // TODO linux
+            file = ResourceUtils.getFile("classpath:ffmpeg");
+        }
         String ffmpeg_path =file.getAbsolutePath();
-//        String ffmpeg_path = systemConfig.getFfmpegPath();
         String serverPath = systemConfig.getUploadVideoLocation();
         Map msgMap = JSON.parseObject(msg, Map.class);
         log.info("receive media process task msg :{} ", msgMap);
