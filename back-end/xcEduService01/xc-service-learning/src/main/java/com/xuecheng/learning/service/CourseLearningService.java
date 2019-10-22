@@ -38,6 +38,7 @@ public class CourseLearningService {
         }
         //TODO :校验学生学习权限
 
+        // 获取课程计划播放地址
         TeachplanMediaPub getmedia = courseSearchClient.getmedia(teachplanId);
         if (getmedia == null || StringUtils.isBlank(getmedia.getMediaUrl())) {
             log.error("远程获取课程媒资信息 失败;{}", getmedia);
