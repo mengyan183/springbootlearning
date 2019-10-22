@@ -9,6 +9,7 @@ import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.search.service.EsCourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +42,7 @@ public class EsCourseController implements EsCourseControllerApi {
 
     @Override
     @GetMapping(value = "/getmedia/{teachplanId}")
-    public TeachplanMediaPub getmedia(@PathVariable("teachplanId") String teachplanId) {
+    public TeachplanMediaPub getmedia(@PathVariable("teachplanId") String teachplanId){
         if(StringUtils.isBlank(teachplanId)){
             return null;
         }
@@ -49,8 +50,7 @@ public class EsCourseController implements EsCourseControllerApi {
         ArrayList<String> strings = new ArrayList<>();
         strings.add(teachplanId);
         //通过service查询ES获取课程媒资信息
-        QueryResponseResult<TeachplanMediaPub> mediaPubQueryResponseResult =
-                esCourseService.getmedia(strings);
+        QueryResponseResult<TeachplanMediaPub> mediaPubQueryResponseResult = esCourseService.getmedia(strings);
         QueryResult<TeachplanMediaPub> queryResult = mediaPubQueryResponseResult.getQueryResult();
         if (queryResult != null && queryResult.getList() != null
                 && queryResult.getList().size() > 0) { //返回课程计划对应课程媒资
