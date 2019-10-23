@@ -67,6 +67,12 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         //所有请求必须认证通过
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests()
+                //下边的路径放行
+                .antMatchers("/swagger-ui.html",
+                        "/webjars/**","/v2/**","/favicon.ico",
+                        "/","/csrf",
+                        "/swagger-resources/**").permitAll()
+                .anyRequest().authenticated();
     }
 }

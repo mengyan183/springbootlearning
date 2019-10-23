@@ -28,7 +28,6 @@ public class Swagger2Configuration {
         return new ApiInfoBuilder()
                 .title("学成网api文档")
                 .description("学成网api文档")
-//                .termsOfServiceUrl("/")
                 .version("1.0")
                 .build();
     }

@@ -3,6 +3,7 @@ package com.xuecheng.manage_course;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * 1、 启动类添加@EnableFeignClients注解，Spring会扫描标记了@FeignClient注解的接口，并生成此接口的代理
@@ -31,7 +33,8 @@ import org.springframework.web.client.RestTemplate;
 @ComponentScan(basePackages = {"com.xuecheng.api"})//扫描接口
 @ComponentScan(basePackages = {"com.xuecheng.manage_course"})
 @ComponentScan(basePackages = {"com.xuecheng.framework"})//扫描common下的所有类
-public class ManageCourseApplication {
+@EnableSwagger2 //启用swagger2,通过outh2认证 
+public class ManageCourseApplication{
     public static void main(String[] args) throws Exception {
         SpringApplication.run(ManageCourseApplication.class, args);
     }
