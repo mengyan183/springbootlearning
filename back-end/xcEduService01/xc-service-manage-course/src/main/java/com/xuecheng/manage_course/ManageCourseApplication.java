@@ -33,7 +33,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ComponentScan(basePackages = {"com.xuecheng.api"})//扫描接口
 @ComponentScan(basePackages = {"com.xuecheng.manage_course"})
 @ComponentScan(basePackages = {"com.xuecheng.framework"})//扫描common下的所有类
-@EnableSwagger2 //启用swagger2,通过outh2认证 
+@EnableSwagger2 //启用swagger2,通过outh2认证
 public class ManageCourseApplication{
     public static void main(String[] args) throws Exception {
         SpringApplication.run(ManageCourseApplication.class, args);
