@@ -26,7 +26,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     ClientDetailsService clientDetailsService;
 
     /**
-     * 实现密码登录认证授权
+     * 实现密码登录授权认证
+     * 认证的步骤为:
+     *  1: 首先进行客户端认证, 获取配置文件中的auth.clientId 是否和当前请求中携带的clientid 是否一致,如果不一致直接返回AccessDeniedException Access is denied;clientId认证通过后,匹配clientSecret是否一致;client认证通过后,返回当前认证服务器客户端用户,并把数据注入spring容器,实现身份授权;
+     *  2:如果当前请求中grandType 为password 则证明要求请求参数中需要传递userName和password,然后进行自定义用户名密码校验;下发令牌的过程为认证服务使用jwt对当前请求中携带的用户名密码进行私钥认证;校验通过后返回 令牌
+     *
      *
      * @param username
      * @return
@@ -35,9 +39,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //取出身份，如果身份为空说明没有认证
+        // 1: 进行clientid认证,校验请求传递的clientId是否一致
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         //没有认证统一采用httpbasic认证，httpbasic中存储了client_id和client_secret，开始认证client_id和client_secret
         if(authentication==null){
+            // 2: 根据clientId 校验clientSecret是否一致
             ClientDetails clientDetails = clientDetailsService.loadClientByClientId(username);
             if(clientDetails!=null){
                 //密码
@@ -51,6 +57,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // 身份认证通过返回 用户token信息
         XcUserExt userext = new XcUserExt();
         userext.setUsername("itcast");
+        // 执行jwt私钥加密 密码
         userext.setPassword(new BCryptPasswordEncoder().encode("123"));
         userext.setPermissions(new ArrayList<XcMenu>());
         if(userext == null){
