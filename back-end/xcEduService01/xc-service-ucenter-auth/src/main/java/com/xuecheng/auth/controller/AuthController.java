@@ -1,6 +1,7 @@
 package com.xuecheng.auth.controller;
 
 import com.xuecheng.api.auth.AuthControllerApi;
+import com.xuecheng.auth.config.SystemConfig;
 import com.xuecheng.auth.service.AuthService;
 import com.xuecheng.framework.domain.ucenter.ext.AuthToken;
 import com.xuecheng.framework.domain.ucenter.request.LoginRequest;
@@ -31,6 +32,8 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthController implements AuthControllerApi {
     @Autowired
     private AuthService authService;
+    @Autowired
+    private SystemConfig systemConfig;
 
     /**
      * 登录
@@ -51,7 +54,7 @@ public class AuthController implements AuthControllerApi {
             HttpServletResponse response = ((ServletRequestAttributes)
                     RequestContextHolder.getRequestAttributes()).getResponse();
 //添加cookie 认证令牌，最后一个参数设置为false，表示允许浏览器获取
-            CookieUtil.addCookie(response, cookieDomain, "/", "uid", token, cookieMaxAge, false);
+            CookieUtil.addCookie(response, systemConfig.getCookieDomain(), "/", "uid", authToken.getAccess_token(), systemConfig.getCookieMaxAge(), false);
             return new LoginResult(CommonCode.SUCCESS, authToken.getAccess_token());
         } catch (Exception e) {
             log.error(e.getMessage());

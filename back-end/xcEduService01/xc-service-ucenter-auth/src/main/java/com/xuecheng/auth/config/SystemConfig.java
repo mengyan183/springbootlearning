@@ -33,4 +33,15 @@ public class SystemConfig implements Serializable {
      */
     @Value("{auth.tokenValiditySeconds}")
     private Long authTokenValiditySeconds;
+    /**
+     * cookie domain
+     */
+    @Value("{auth.cookieDomain}")
+    private String cookieDomain;
+
+    /**
+     * cookie过期时间
+     */
+    @Value("{auth.cookieMaxAge}")
+    private Long cookieMaxAge;
 }
