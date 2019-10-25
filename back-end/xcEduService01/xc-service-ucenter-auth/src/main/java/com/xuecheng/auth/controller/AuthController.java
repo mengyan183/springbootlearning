@@ -65,8 +65,13 @@ public class AuthController implements AuthControllerApi {
      * @return
      */
     @Override
-    public ResponseResult logout() {
-        return null;
+    @GetMapping("/userlogout")
+    public ResponseResult logout(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) {
+        Map<String, String> cookieMap = CookieUtil.readCookie(httpServletRequest, "uid");
+        authService.logout(cookieMap.get("uid"));
+        //清除cookie
+        CookieUtil.addCookie(httpServletResponse, systemConfig.getCookieDomain(), "/", "uid", null, 0, false);
+        return new ResponseResult(CommonCode.SUCCESS);
     }
 
     @Override

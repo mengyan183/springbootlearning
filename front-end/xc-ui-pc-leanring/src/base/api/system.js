@@ -24,5 +24,5 @@ export const course_view = id => {
 }
 /*获取jwt令牌*/
 export const getjwt= () => {
-  return http.requestQuickGet('/openapi/auth/userjwt')
+  return http.requestQuickGet('/openapi/auth/getuserjwt')
 }

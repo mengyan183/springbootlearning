@@ -129,7 +129,7 @@ public class AuthService {
      */
     public JwtResult getUserJwt(String authorization) {
         if (StringUtils.isBlank(authorization)) {
-            log.error("用户短token不能为空");
+            log.error("用户短token不能为空/用户已退出");
             return new JwtResult(CommonCode.FAIL, null);
         }
         String key = "user_token" + authorization;
@@ -149,5 +149,18 @@ public class AuthService {
             log.error(e.getMessage());
             return new JwtResult(CommonCode.FAIL, null);
         }
+    }
+
+    /**
+     * 用户登出
+     *
+     * @param accessToken 用户身份认证token
+     */
+    public void logout(String accessToken) {
+        if (StringUtils.isBlank(accessToken)) {
+            return;
+        }
+        // 清除redis中存储的该用户 token信息
+        stringRedisTemplate.delete("user_token" + accessToken);
     }
 }

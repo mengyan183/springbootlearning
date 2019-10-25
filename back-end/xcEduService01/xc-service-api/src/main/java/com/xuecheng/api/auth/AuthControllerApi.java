@@ -16,7 +16,7 @@ public interface AuthControllerApi {
     LoginResult login(LoginRequest loginRequest, HttpServletResponse response);
 
     @ApiOperation("退出")
-    ResponseResult logout();
+    ResponseResult logout(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse);
 
     @ApiOperation("查询用户jwt令牌")
     JwtResult getUserJwt(HttpServletRequest httpServletRequest);
