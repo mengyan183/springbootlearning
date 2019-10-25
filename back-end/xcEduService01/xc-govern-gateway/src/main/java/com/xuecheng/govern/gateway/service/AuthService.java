@@ -33,7 +33,7 @@ public class AuthService {
         if (StringUtils.isBlank(tokenByAccessToken)) {
             return false;
         }
-        tokenByAccessToken += "Bearer ";
+        tokenByAccessToken = "Bearer " + tokenByAccessToken;
         return tokenByAccessToken.equalsIgnoreCase(authorization);
     }
 }
