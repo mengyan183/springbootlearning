@@ -20,4 +20,8 @@ public interface AuthControllerApi {
 
     @ApiOperation("查询用户jwt令牌")
     JwtResult getUserJwt(HttpServletRequest httpServletRequest);
+
+    @ApiOperation("根据用户accesstoken获取redis存储的完整token信息")
+    String getTokenByAccessToken(String accessToken);
+
 }

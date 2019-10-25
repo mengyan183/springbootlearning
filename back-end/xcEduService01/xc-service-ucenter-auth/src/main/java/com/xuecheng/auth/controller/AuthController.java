@@ -14,10 +14,7 @@ import com.xuecheng.framework.utils.CookieUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -80,5 +77,11 @@ public class AuthController implements AuthControllerApi {
         // 用户token
         Map<String, String> cookieMap = CookieUtil.readCookie(httpServletRequest, "uid");
         return authService.getUserJwt(cookieMap.get("uid"));
+    }
+
+    @Override
+    @GetMapping("/gettokenbyaccesstoken")
+    public String getTokenByAccessToken(@RequestParam("accessToken") String accessToken){
+        return authService.getTokenByAccessToken(accessToken);
     }
 }

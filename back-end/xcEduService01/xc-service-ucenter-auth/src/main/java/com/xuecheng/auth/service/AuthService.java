@@ -163,4 +163,21 @@ public class AuthService {
         // 清除redis中存储的该用户 token信息
         stringRedisTemplate.delete("user_token" + accessToken);
     }
+
+    /**
+     * 根据用户token信息获取该用户完整token信息
+     *
+     * @param accessToken 精简token
+     * @return 完整token
+     */
+    public String getTokenByAccessToken(String accessToken) {
+        if (StringUtils.isBlank(accessToken)) {
+            return null;
+        }
+        JwtResult userJwt = getUserJwt(accessToken);
+        if (userJwt == null || !userJwt.isSuccess()) {
+            return null;
+        }
+        return userJwt.getJwt();
+    }
 }
