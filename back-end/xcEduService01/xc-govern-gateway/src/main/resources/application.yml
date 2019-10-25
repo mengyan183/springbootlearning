@@ -40,3 +40,28 @@ zuul:
       strip‐prefix: false #true：代理转发时去掉前缀，false:代理转发时不去掉前缀
       sensitiveHeaders:  # 如果不设置该字段 默认zuul会屏蔽所有cookie，cookie不会传到下游服务，这里设置为空则取消默认的黑名单(传递所有cookie)，如果设置了具体的头信息则不会传到下游服务;过滤cookie信息
       # ignoredHeaders: Authorization #过滤header中信息
+    xc‐service‐learning: #路由名称，名称任意，保持所有路由名称唯一
+      path: /learning/**
+      serviceId: xc‐service‐learning #指定服务id，从Eureka中找到服务的ip和端口
+      strip‐prefix: false
+      sensitiveHeaders:
+    manage‐cms:
+      path: /cms/**
+      serviceId: xc‐service‐manage‐cms
+      strip‐prefix: false
+      sensitiveHeaders:
+    manage‐sys:
+      path: /sys/**
+      serviceId: xc‐service‐manage‐cms
+      strip‐prefix: false
+      sensitiveHeaders:
+    service‐ucenter:
+      path: /ucenter/**
+      serviceId: xc‐service‐ucenter
+      sensitiveHeaders:
+      strip‐prefix: false
+    xc‐service‐manage‐order:
+      path: /order/**
+      serviceId: xc‐service‐manage‐order
+      sensitiveHeaders:
+      strip‐prefix: false
