@@ -5,6 +5,7 @@ import com.xuecheng.auth.config.SystemConfig;
 import com.xuecheng.framework.client.XcServiceList;
 import com.xuecheng.framework.domain.ucenter.ext.AuthToken;
 import com.xuecheng.framework.domain.ucenter.request.LoginRequest;
+import com.xuecheng.framework.domain.ucenter.response.AuthCode;
 import com.xuecheng.framework.exception.ExceptionCast;
 import com.xuecheng.framework.model.response.CommonCode;
 import lombok.extern.slf4j.Slf4j;
@@ -98,6 +99,15 @@ public class AuthService {
         ResponseEntity<Map> exchange = restTemplate.exchange(authUrl, HttpMethod.POST, multiValueMapHttpEntity, Map.class);
         Map userTokenMap = exchange.getBody();
         if (userTokenMap == null || CollectionUtils.isEmpty(userTokenMap) || StringUtils.isBlank((String) userTokenMap.get("access_token")) || StringUtils.isBlank((String) userTokenMap.get("refresh_token")) || StringUtils.isBlank((String) userTokenMap.get("jti"))) {
+            if (userTokenMap != null && userTokenMap.containsKey("error_description")) {
+                String error_description = userTokenMap.get("error_description").toString();
+                log.error(error_description);
+                if ("UserDetailsService returned null, which is an interface contract violation".equalsIgnoreCase(error_description)) {
+                    ExceptionCast.cast(AuthCode.AUTH_ACCOUNT_NOTEXISTS);
+                } else if ("Bad credentials".equalsIgnoreCase(error_description)) {
+                    ExceptionCast.cast(AuthCode.AUTH_CREDENTIAL_ERROR);
+                }
+            }
             log.error("申请令牌获取到的数据为空;authUrl:{};请求参数为:{};返回的数据为:{}", authUrl, JSON.toJSONString(multiValueMapHttpEntity), JSON.toJSONString(userTokenMap));
             ExceptionCast.cast(CommonCode.FAIL);
         }

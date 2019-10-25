@@ -1,7 +1,9 @@
 package com.xuecheng.auth.service;
 
+import com.xuecheng.auth.client.UserServiceClient;
 import com.xuecheng.framework.domain.ucenter.XcMenu;
 import com.xuecheng.framework.domain.ucenter.ext.XcUserExt;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -11,7 +13,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.stereotype.Service;
@@ -20,10 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    ClientDetailsService clientDetailsService;
+    private ClientDetailsService clientDetailsService;
+    @Autowired
+    private UserServiceClient userServiceClient;
 
     /**
      * 实现密码登录授权认证
@@ -52,21 +56,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             }
         }
         if (StringUtils.isEmpty(username)) {
+            log.error("用户名不能为空");
             return null;
         }
         // 身份认证通过返回 用户token信息
-        XcUserExt userext = new XcUserExt();
-        userext.setUsername("itcast");
-        // 执行jwt私钥加密 密码
-        userext.setPassword(new BCryptPasswordEncoder().encode("123"));
-        userext.setPermissions(new ArrayList<XcMenu>());
+        XcUserExt userext = userServiceClient.getUserext(username);
         if(userext == null){
+            // 返回空给spring security 表示该用户不存在
+            log.error("未找到该用户;userName:{}", username);
             return null;
         }
         //取出正确密码（hash值）
         String password = userext.getPassword();
-        //这里暂时使用静态密码
-//       String password ="123";
         //用户权限，这里暂时使用静态数据，最终会从数据库读取
         //从数据库获取权限
         List<XcMenu> permissions = userext.getPermissions();
