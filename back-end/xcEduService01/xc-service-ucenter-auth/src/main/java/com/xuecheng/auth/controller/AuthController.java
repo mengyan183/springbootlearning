@@ -16,8 +16,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -43,7 +41,7 @@ public class AuthController implements AuthControllerApi {
      */
     @Override
     @PostMapping("/userlogin")
-    public LoginResult login(LoginRequest loginRequest) {
+    public LoginResult login(LoginRequest loginRequest, HttpServletResponse response) {
         try {
             // 申请令牌
             AuthToken authToken = authService.login(loginRequest);
@@ -51,10 +49,8 @@ public class AuthController implements AuthControllerApi {
             if (authToken == null || StringUtils.isEmpty(authToken.getJwt_token())) {
                 return new LoginResult(AuthCode.AUTH_LOGIN_ERROR, null);
             }
-            HttpServletResponse response = ((ServletRequestAttributes)
-                    RequestContextHolder.getRequestAttributes()).getResponse();
-//添加cookie 认证令牌，最后一个参数设置为false，表示允许浏览器获取
-            CookieUtil.addCookie(response, systemConfig.getCookieDomain(), "/", "uid", authToken.getAccess_token(), systemConfig.getCookieMaxAge(), false);
+            //添加cookie 认证令牌，最后一个参数设置为false，表示允许浏览器获取
+            CookieUtil.addCookie(response, systemConfig.getCookieDomain(), "/", "uid", authToken.getAccess_token(), Integer.parseInt(systemConfig.getCookieMaxAge()), false);
             return new LoginResult(CommonCode.SUCCESS, authToken.getAccess_token());
         } catch (Exception e) {
             log.error(e.getMessage());

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
 @EnableDiscoveryClient
@@ -18,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 @ComponentScan(basePackages={"com.xuecheng.api"})//扫描接口
 @ComponentScan(basePackages={"com.xuecheng.framework"})//扫描common下的所有类
 @SpringBootApplication
+@EnableSwagger2
 public class UcenterAuthApplication {
     public static void main(String[] args) {
         SpringApplication.run(UcenterAuthApplication.class, args);

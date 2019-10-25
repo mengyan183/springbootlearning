@@ -88,7 +88,7 @@ public class AuthService {
             @Override
             public void handleError(ClientHttpResponse response) throws IOException {
                 // 对 400 和 401 等 错误码正常返回
-                if ("400".equalsIgnoreCase(response.getStatusText()) || "401".equalsIgnoreCase(response.getStatusText())) {
+                if ("400".equalsIgnoreCase(response.getStatusCode().toString()) || "401".equalsIgnoreCase(response.getStatusCode().toString())) {
                     return;
                 }
                 super.handleError(response);
@@ -106,7 +106,7 @@ public class AuthService {
         authToken.setJwt_token((String) userTokenMap.get("access_token"));
         authToken.setRefresh_token((String) userTokenMap.get("refresh_token"));
         // 存入redis
-        stringRedisTemplate.opsForValue().set("user_token" + authToken.getAccess_token(), JSON.toJSONString(authToken), systemConfig.getAuthTokenValiditySeconds(), TimeUnit.SECONDS);
+        stringRedisTemplate.opsForValue().set("user_token" + authToken.getAccess_token(), JSON.toJSONString(authToken), Long.parseLong(systemConfig.getAuthTokenValiditySeconds()), TimeUnit.SECONDS);
         return authToken;
     }
 }

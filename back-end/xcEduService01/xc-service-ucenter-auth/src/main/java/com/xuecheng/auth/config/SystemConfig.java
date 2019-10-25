@@ -19,29 +19,29 @@ public class SystemConfig implements Serializable {
     /**
      * 认证服务客户端id
      */
-    @Value("{auth.clientId}")
+    @Value("${auth.clientId}")
     private String authClientId;
 
     /**
      * 认证服务客户端secret
      */
-    @Value("{auth.clientSecret}")
+    @Value("${auth.clientSecret}")
     private String authClientSecret;
 
     /**
      * token过期时间
      */
-    @Value("{auth.tokenValiditySeconds}")
-    private Long authTokenValiditySeconds;
+    @Value("${auth.tokenValiditySeconds}")
+    private String authTokenValiditySeconds;
     /**
      * cookie domain
      */
-    @Value("{auth.cookieDomain}")
+    @Value("${auth.cookieDomain}")
     private String cookieDomain;
 
     /**
      * cookie过期时间
      */
-    @Value("{auth.cookieMaxAge}")
-    private Long cookieMaxAge;
+    @Value("${auth.cookieMaxAge}")
+    private String cookieMaxAge;
 }
