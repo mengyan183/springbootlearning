@@ -6,6 +6,7 @@ import com.xuecheng.auth.service.AuthService;
 import com.xuecheng.framework.domain.ucenter.ext.AuthToken;
 import com.xuecheng.framework.domain.ucenter.request.LoginRequest;
 import com.xuecheng.framework.domain.ucenter.response.AuthCode;
+import com.xuecheng.framework.domain.ucenter.response.JwtResult;
 import com.xuecheng.framework.domain.ucenter.response.LoginResult;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.ResponseResult;
@@ -13,11 +14,14 @@ import com.xuecheng.framework.utils.CookieUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * @author guoxing
@@ -63,5 +67,13 @@ public class AuthController implements AuthControllerApi {
     @Override
     public ResponseResult logout() {
         return null;
+    }
+
+    @Override
+    @GetMapping("/getuserjwt")
+    public JwtResult getUserJwt(HttpServletRequest httpServletRequest) {
+        // 用户token
+        Map<String, String> cookieMap = CookieUtil.readCookie(httpServletRequest, "uid");
+        return authService.getUserJwt(cookieMap.get("uid"));
     }
 }

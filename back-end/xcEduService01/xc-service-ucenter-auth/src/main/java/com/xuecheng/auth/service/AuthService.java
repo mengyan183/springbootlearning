@@ -6,6 +6,7 @@ import com.xuecheng.framework.client.XcServiceList;
 import com.xuecheng.framework.domain.ucenter.ext.AuthToken;
 import com.xuecheng.framework.domain.ucenter.request.LoginRequest;
 import com.xuecheng.framework.domain.ucenter.response.AuthCode;
+import com.xuecheng.framework.domain.ucenter.response.JwtResult;
 import com.xuecheng.framework.exception.ExceptionCast;
 import com.xuecheng.framework.model.response.CommonCode;
 import lombok.extern.slf4j.Slf4j;
@@ -118,5 +119,35 @@ public class AuthService {
         // 存入redis
         stringRedisTemplate.opsForValue().set("user_token" + authToken.getAccess_token(), JSON.toJSONString(authToken), Long.parseLong(systemConfig.getAuthTokenValiditySeconds()), TimeUnit.SECONDS);
         return authToken;
+    }
+
+    /**
+     * 获取用户jwt token信息
+     *
+     * @param authorization 请求cookie中携带的认证信息
+     * @return
+     */
+    public JwtResult getUserJwt(String authorization) {
+        if (StringUtils.isBlank(authorization)) {
+            log.error("用户短token不能为空");
+            return new JwtResult(CommonCode.FAIL, null);
+        }
+        String key = "user_token" + authorization;
+        String s = stringRedisTemplate.opsForValue().get(key);
+        if (StringUtils.isBlank(s)) {
+            log.error("未获取到该用户token;key:{}", key);
+            return new JwtResult(CommonCode.FAIL, null);
+        }
+        try {
+            AuthToken authToken = JSON.parseObject(s, AuthToken.class);
+            if (authToken == null || StringUtils.isBlank(authToken.getJwt_token())) {
+                log.error("用户完整token转换失败;s:{};authToken:{}", s, authToken);
+                return new JwtResult(CommonCode.FAIL, null);
+            }
+            return new JwtResult(CommonCode.SUCCESS, authToken.getJwt_token());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new JwtResult(CommonCode.FAIL, null);
+        }
     }
 }
