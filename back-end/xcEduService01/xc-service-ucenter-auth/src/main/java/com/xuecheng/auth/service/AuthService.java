@@ -72,9 +72,9 @@ public class AuthService {
         byte[] encode = Base64.encode(string.getBytes());
         // 加密 令牌申请 密码
         String httpbasic = "Basic " + new String(encode);
-        //"Basic WGNXZWJBcHA6WGNXZWJBcHA="
+        //"Basic WGNXZWJBcHA6WGNXZWJBcHA="  设置认证服务器客户端认证码
         headers.add("Authorization", httpbasic);
-        //2、包括:grant_type、username、passowrd
+        //2、包括:grant_type、username、password ;密码登录认证,接收请求中的用户名/密码
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "password");
         body.add("username", loginRequest.getUsername());
@@ -94,7 +94,7 @@ public class AuthService {
                 super.handleError(response);
             }
         });
-        // 发送 http请求 并使用map接收
+        // 发送 http请求 并使用map接收 ; 请求 授权地址
         ResponseEntity<Map> exchange = restTemplate.exchange(authUrl, HttpMethod.POST, multiValueMapHttpEntity, Map.class);
         Map userTokenMap = exchange.getBody();
         if (userTokenMap == null || CollectionUtils.isEmpty(userTokenMap) || StringUtils.isBlank((String) userTokenMap.get("access_token")) || StringUtils.isBlank((String) userTokenMap.get("refresh_token")) || StringUtils.isBlank((String) userTokenMap.get("jti"))) {
