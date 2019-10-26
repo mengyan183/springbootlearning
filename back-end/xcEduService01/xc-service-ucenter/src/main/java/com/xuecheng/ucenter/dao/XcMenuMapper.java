@@ -2,6 +2,7 @@ package com.xuecheng.ucenter.dao;
 
 import com.xuecheng.framework.domain.ucenter.XcMenu;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,5 +19,5 @@ public interface XcMenuMapper {
      * @param id
      * @return
      */
-    List<XcMenu> selectPermissionByUserId(String id);
+    List<XcMenu> selectPermissionByUserId(@Param("id") String id);
 }
