@@ -1,9 +1,9 @@
 package com.xuecheng.manage_course;
 
+import com.xuecheng.framework.interceptor.FeignClientInterceptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -48,5 +48,11 @@ public class ManageCourseApplication{
     @LoadBalanced
     public RestTemplate restTemplate() {
         return new RestTemplate(new OkHttp3ClientHttpRequestFactory());
+    }
+
+
+    @Bean
+    public FeignClientInterceptor feignClientInterceptor(){
+        return new FeignClientInterceptor();
     }
 }
