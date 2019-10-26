@@ -8,17 +8,18 @@
   </div>
 </template>
 <script>
-import PHead from '@/base/components/head.vue';
-import PFoot from '@/base/components/foot.vue';
-import loginForm from '@/base/components/loginForm.vue';
-import utilApi from '../../../common/utils';
+import PHead from '@/base/components/head.vue'
+import PFoot from '@/base/components/foot.vue'
+import loginForm from '@/base/components/loginForm.vue'
+// eslint-disable-next-line no-unused-vars
+import utilApi from '../../../common/utils'
 export default {
-	components:{
-		PHead,
+  components: {
+    PHead,
     PFoot,
     loginForm
-	},
-  data() {
+  },
+  data () {
     return {
 
     }
@@ -26,7 +27,7 @@ export default {
   methods: {
 
   },
-  mounted() {
+  mounted () {
 
   }
 }

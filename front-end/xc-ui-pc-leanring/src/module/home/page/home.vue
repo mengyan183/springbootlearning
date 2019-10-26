@@ -24,7 +24,7 @@
     </div>
     <div class="personal-content pull-right">
       <router-view></router-view>
-       <course-list></course-list>
+<!--       <course-list></course-list>-->
     </div>
   </div>
 
@@ -33,18 +33,19 @@
 </template>
 
 <script>
-  import PHead from '@/base/components/head.vue';
-  import PFoot from '@/base/components/foot.vue';
-//  import courseList from '@/module/course/page/course_list.vue';
+  import PHead from '@/base/components/head.vue'
+  import PFoot from '@/base/components/foot.vue'
+  // eslint-disable-next-line no-unused-vars
+  import courseList from '@/module/course/page/course_list.vue'
 
-//  import $ from  './../../../../static/plugins/jquery/dist/jquery.js'
-//  import './../../../../static/plugins/bootstrap/dist/js/bootstrap.js'
+  import $ from './../../../../static/plugins/jquery/dist/jquery.js'
+  // import './../../../../static/plugins/bootstrap/dist/js/bootstrap.js'
   export default {
-    components:{
+    components: {
       PHead,
       PFoot
     },
-    data() {
+    data () {
       return {
 
       }
@@ -52,12 +53,12 @@
     methods: {
 
     },
-    mounted() {
-      //跳转到我的课程
-      //this.$router.push({ path: '/course'})
+    mounted () {
+      // 跳转到我的课程
+      // this.$router.push({ path: '/course'})
 
-      $(function() {
-        $('.aft').hover(function() {
+      $(function () {
+        $('.aft').hover(function () {
           if (!$(this).hasClass('ac')) {
             $(this).find('ul').html($('#listcont').html())
             $(this).addClass('ac')
@@ -68,26 +69,24 @@
         })
       })
 
-
-      $(function() {
-        $(window).scroll(function() {
+      $(function () {
+        $(window).scroll(function () {
           console.log($(this)[0].scrollY)
           if ($(this)[0].scrollY > 235) {
             $('.personal-nav').css({
               'position': 'fixed',
               'top': 10
-            });
+            })
           } else if ($(this)[0].scrollY <= 155) {
             $('.personal-nav').css({
               'position': 'relative',
               'top': -70
-            });
-          };
+            })
+          }
         })
       })
     }
   }
-
 </script>
 
 <style>

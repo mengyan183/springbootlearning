@@ -35,58 +35,58 @@
   </header>
 </template>
 <script type="text/javascript">
-
   import utilApi from '../../common/utils'
+  // eslint-disable-next-line no-unused-vars
   import * as loginApi from '../../module/home/api/home'
   export default {
-    components:{
+    components: {
 
     },
-    data() {
+    data () {
       return {
-        keyword:'',
-        LoginFormVisible:false,
-        logined:false
+        keyword: '',
+        LoginFormVisible: false,
+        logined: false
       }
     },
     methods: {
-      search() {
+      search () {
         if (this.keyword === '') {
-          window.location = "http://www.xuecheng.com/course/search"
+          window.location = 'http://www.xuecheng.com/course/search'
         } else {
           let keyword = encodeURIComponent(this.keyword)
-          window.location = "http://www.xuecheng.com/course/search?keyword="+keyword
+          window.location = 'http://www.xuecheng.com/course/search?keyword=' + keyword
         }
       },
-      //退出登录
+      // 退出登录
       logout: function () {
         this.$confirm('确认退出吗?', '提示', {
         }).then(() => {
-          //跳转到统一登陆
+          // 跳转到统一登陆
+            // eslint-disable-next-line standard/object-curly-even-spacing
           this.$router.push({ path: '/logout'})
         }).catch(() => {
 
-        });
+        })
       },
-      refresh_user:function(){
-        let activeUser= utilApi.getActiveUser();
+      refresh_user: function () {
+        let activeUser = utilApi.getActiveUser()
 
-        if(activeUser){
+        if (activeUser) {
           this.logined = true
-          this.user = activeUser;
-          // console.log(this.user.username)
-        }else{
-          // this.showlogin()
+          this.user = activeUser
+        // console.log(this.user.username)
+        } else {
+          this.showlogin()
         }
       },
-      showlogin: function(){
-        this.returnUrl = window.location;
-        this.LoginFormVisible = true;
+      showlogin: function () {
+        this.returnUrl = window.location
+        this.LoginFormVisible = true
       }
     },
-    mounted() {
+    mounted () {
       this.refresh_user()
-
     }
   }
 </script>
