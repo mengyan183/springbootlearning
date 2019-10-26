@@ -18,6 +18,7 @@ import com.xuecheng.manage_cms.dao.CmsSiteRepository;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
@@ -44,6 +45,7 @@ import java.util.Optional;
  * @create 2018-09-12 18:32
  **/
 @Service
+@Slf4j
 public class PageService {
 
     @Autowired
@@ -246,6 +248,7 @@ public class PageService {
         //执行静态化
         String pageHtml = this.getPageHtmlByPageId(pageId);
         if (StringUtils.isEmpty(pageHtml)) {
+            log.error("页面静态化失败");
             ExceptionCast.cast(CmsCode.CMS_GENERATEHTML_HTMLISNULL);
         }
         //保存静态化文件
@@ -369,6 +372,8 @@ public class PageService {
                 ExceptionCast.cast(CommonCode.FAIL);
             }
         } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
             ExceptionCast.cast(CommonCode.FAIL);
         }
         return null;
