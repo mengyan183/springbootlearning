@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 /**
  * ResourceServerConfig
+ * 身份认证配置
  *
  * @author guoxing
  * @date 10/23/2019 4:29 PM
@@ -70,8 +71,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http.authorizeRequests()
                 //下边的路径放行
                 .antMatchers("/swagger-ui.html",
-                        "/webjars/**","/v2/**","/favicon.ico",
-                        "/","/csrf",
+                        "/webjars/**", "/v2/**", "/favicon.ico",
+                        "/", "/csrf",
                         "/swagger-resources/**").permitAll()
                 .anyRequest().authenticated();
     }

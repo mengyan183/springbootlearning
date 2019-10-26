@@ -22,6 +22,7 @@ import com.xuecheng.manage_course.service.CourseService;
 import com.xuecheng.manage_course.service.TeachplanService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -123,6 +124,7 @@ public class CourseController implements CourseControllerApi {
 
     @Override
     @GetMapping("/coursepic/get/{courseId}")
+    @PreAuthorize("hasAuthority('coursepic_get')") // 使用spring authority 相关注解表示该方法要求符合权限才能访问该方法
     public CoursePic getCoursePic(@PathVariable("courseId") String courseId) {
         return courseService.getCoursePic(courseId);
     }
