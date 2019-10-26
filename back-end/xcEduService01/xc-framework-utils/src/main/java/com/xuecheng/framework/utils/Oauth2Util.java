@@ -10,6 +10,7 @@ import java.util.Map;
 
 /**
  * Created by mrt on 2018/5/25.
+ * 解析 jwt 令牌
  */
 public class Oauth2Util {
 

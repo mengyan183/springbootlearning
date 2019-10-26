@@ -16,6 +16,8 @@ import com.xuecheng.framework.domain.course.response.CoursePublishResult;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.framework.model.response.ResponseResult;
+import com.xuecheng.framework.utils.XcOauth2Util;
+import com.xuecheng.framework.web.BaseController;
 import com.xuecheng.manage_course.service.CourseBaseService;
 import com.xuecheng.manage_course.service.CourseMarketService;
 import com.xuecheng.manage_course.service.CourseService;
@@ -35,7 +37,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "课程管理")
 @RestController
 @RequestMapping("/course")
-public class CourseController implements CourseControllerApi {
+public class CourseController extends BaseController implements CourseControllerApi {
     @Autowired
     private TeachplanService teachplanService;
     @Autowired
@@ -76,6 +78,18 @@ public class CourseController implements CourseControllerApi {
     @Override
     @GetMapping("/coursebase/list/{page}/{size}")
     public QueryResponseResult<CourseInfo> findCourseList(@PathVariable("page") int page, @PathVariable("size") int size, CourseListRequest courseListRequest) {
+
+        if (courseListRequest == null) {
+            courseListRequest = new CourseListRequest();
+        }
+        // 解析header 中 authorization 包含的jwt令牌,转换为解密数据(用户信息)
+        XcOauth2Util xcOauth2Util = new XcOauth2Util();
+        XcOauth2Util.UserJwt userJwtFromHeader = xcOauth2Util.getUserJwtFromHeader(request);
+        if (userJwtFromHeader != null) {
+            String companyId = userJwtFromHeader.getCompanyId();
+            courseListRequest.setCompanyId(companyId);
+        }
+
         //分页查询
         Page<CourseInfo> list = courseService.list(page, size, courseListRequest);
         QueryResult<CourseInfo> queryResult = new QueryResult<>();
