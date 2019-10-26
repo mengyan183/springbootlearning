@@ -1,6 +1,7 @@
 package com.xuecheng.manage_course;
 
 import com.xuecheng.framework.interceptor.FeignClientInterceptor;
+import com.xuecheng.framework.interceptor.RestTemplateInterceptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -13,6 +14,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.Collections;
 
 /**
  * 1、 启动类添加@EnableFeignClients注解，Spring会扫描标记了@FeignClient注解的接口，并生成此接口的代理
@@ -34,7 +37,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ComponentScan(basePackages = {"com.xuecheng.manage_course"})
 @ComponentScan(basePackages = {"com.xuecheng.framework"})//扫描common下的所有类
 @EnableSwagger2 //启用swagger2,通过outh2认证
-public class ManageCourseApplication{
+public class ManageCourseApplication {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(ManageCourseApplication.class, args);
     }
@@ -47,12 +50,16 @@ public class ManageCourseApplication{
     @Bean
     @LoadBalanced
     public RestTemplate restTemplate() {
-        return new RestTemplate(new OkHttp3ClientHttpRequestFactory());
+        RestTemplateInterceptor restTemplateInterceptor = new RestTemplateInterceptor();
+        RestTemplate restTemplate = new RestTemplate(new OkHttp3ClientHttpRequestFactory());
+        // 设置自定义interceptor拦截器
+        restTemplate.setInterceptors(Collections.singletonList(restTemplateInterceptor));
+        return restTemplate;
     }
 
 
     @Bean
-    public FeignClientInterceptor feignClientInterceptor(){
+    public FeignClientInterceptor feignClientInterceptor() {
         return new FeignClientInterceptor();
     }
 }

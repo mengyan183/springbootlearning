@@ -1,14 +1,14 @@
 <template>
 <div>
   <p-head></p-head>
-  <div class="personal-header" style="background-image: url(static/images/asset-banner.png);"></div>
+  <div class="personal-header" style="background-image: url(./../../../../static/images/asset-banner.png);"></div>
   <!-- 页面 -->
   <div class="container">
     <div class="personal-nav pull-left">
       <div class="nav nav-stacked text-left">
         <div class="title">个人中心</div>
         <div class="my-ico">
-          <img src="/static/images/asset-myimg.jpg" alt="">
+          <img src="./../../../../static/images/asset-myimg.jpg" alt="">
           <p>梦醒时分</p>
         </div>
         <div class="item">

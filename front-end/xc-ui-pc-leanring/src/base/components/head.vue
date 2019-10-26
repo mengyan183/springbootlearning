@@ -74,12 +74,12 @@
         if(activeUser){
           this.logined = true
           this.user = activeUser;
-          //console.log(this.user.username)
+          // console.log(this.user.username)
         }else{
-          //this.showlogin()
+          // this.showlogin()
         }
       },
-      showlogin:function(){
+      showlogin: function(){
         this.returnUrl = window.location;
         this.LoginFormVisible = true;
       }
