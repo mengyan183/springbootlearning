@@ -17,6 +17,11 @@ public class UserJwt extends User {
     private String utype;
     private String companyId;
 
+    /**
+     * @param username    用户名
+     * @param password    密码
+     * @param authorities 权限集合
+     */
     public UserJwt(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
     }

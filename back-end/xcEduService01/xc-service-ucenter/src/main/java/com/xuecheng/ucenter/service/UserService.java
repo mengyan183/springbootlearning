@@ -1,17 +1,21 @@
 package com.xuecheng.ucenter.service;
 
 import com.xuecheng.framework.domain.ucenter.XcCompanyUser;
+import com.xuecheng.framework.domain.ucenter.XcMenu;
 import com.xuecheng.framework.domain.ucenter.XcUser;
 import com.xuecheng.framework.domain.ucenter.ext.XcUserExt;
 import com.xuecheng.ucenter.dao.XcCompanyUserRepository;
+import com.xuecheng.ucenter.dao.XcMenuMapper;
 import com.xuecheng.ucenter.dao.XcUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * UserService
@@ -29,6 +33,8 @@ public class UserService {
 
     @Autowired
     private XcCompanyUserRepository xcCompanyUserRepository;
+    @Autowired
+    private XcMenuMapper xcMenuMapper;
 
 
     /**
@@ -56,8 +62,10 @@ public class UserService {
         } else {
             xcUserExt.setCompanyId(xcCompanyUser.getCompanyId());
         }
-        //TODO : 该用户的相关权限信息
-        xcUserExt.setPermissions(new ArrayList<>(0));
+        //该用户的相关权限信息
+        List<XcMenu> xcMenus = xcMenuMapper.selectPermissionByUserId(xcUser.getId());
+        xcMenus = CollectionUtils.isEmpty(xcMenus) ? Collections.emptyList() : xcMenus;
+        xcUserExt.setPermissions(xcMenus);
         return xcUserExt;
     }
 }
