@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 /**
  * 串行任务测试类
  */
-@Component
+//@Component
 @Slf4j
 public class TaskSeriallyTest {
 
