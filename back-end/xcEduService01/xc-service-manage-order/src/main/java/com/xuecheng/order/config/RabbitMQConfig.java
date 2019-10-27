@@ -31,7 +31,7 @@ public class RabbitMQConfig {
      * @return the exchange
      */
     @Bean(EX_LEARNING_ADDCHOOSECOURSE)
-    public Exchange EX_DECLARE() {
+    public Exchange exchangeLearningAddChooseCourse() {
         return ExchangeBuilder.directExchange(EX_LEARNING_ADDCHOOSECOURSE).durable(true).build();
     }
 

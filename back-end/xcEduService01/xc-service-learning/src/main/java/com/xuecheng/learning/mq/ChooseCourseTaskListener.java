@@ -6,6 +6,8 @@ import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.learning.config.RabbitMQConfig;
 import com.xuecheng.learning.service.CourseLearningService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateUtils;
+import org.assertj.core.util.DateUtil;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +37,15 @@ public class ChooseCourseTaskListener {
                 String valid = (String) map.get("valid");
                 Date startTime = null;
                 Date endTime = null;
-                SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY‐MM‐dd HH:mm:ss");
                 if (map.get("startTime") != null) {
-                    startTime = dateFormat.parse((String) map.get("startTime"));
+                    startTime= DateUtils.parseDate((String) map.get("startTime"),"yyyy-MM-dd hh:mm:ss");
+                } else {
+                    startTime = DateUtil.now();
                 }
                 if (map.get("endTime") != null) {
-                    endTime = dateFormat.parse((String) map.get("endTime"));
+                    endTime = DateUtils.parseDate((String) map.get("endTime"),"yyyy-MM-dd hh:mm:ss");
+                } else {
+                    endTime = DateUtil.now();
                 }
                 //添加选课
                 courseLearningService.addCourse(userId, courseId, valid, startTime, endTime, xcTask);
