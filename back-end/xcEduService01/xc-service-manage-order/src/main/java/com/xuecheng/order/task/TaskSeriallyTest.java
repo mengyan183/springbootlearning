@@ -51,4 +51,22 @@ public class TaskSeriallyTest {
      *  从两个task1 日志 时间间隔 可以看到 从第一个task1 end 到 第二个 task1 start 间隔时间为5秒,表示fixedDelay代表的为上一个任务结束后5秒才再次执行task1
      *
      */
+
+    /**
+     * 2019-10-27 12:44:49.314 [threadPoolTaskScheduler-1] INFO  c.x.order.task.TaskSeriallyTest - task2 start
+     * 2019-10-27 12:44:49.314 [threadPoolTaskScheduler-2] INFO  c.x.order.task.TaskSeriallyTest - task1 start
+     * 2019-10-27 12:44:50.318 [threadPoolTaskScheduler-1] INFO  c.x.order.task.TaskSeriallyTest - task2 end
+     * 2019-10-27 12:44:50.318 [threadPoolTaskScheduler-2] INFO  c.x.order.task.TaskSeriallyTest - task1 end
+     * 2019-10-27 12:44:55.321 [threadPoolTaskScheduler-2] INFO  c.x.order.task.TaskSeriallyTest - task2 start
+     * 2019-10-27 12:44:55.321 [threadPoolTaskScheduler-4] INFO  c.x.order.task.TaskSeriallyTest - task1 start
+     * 2019-10-27 12:44:56.324 [threadPoolTaskScheduler-2] INFO  c.x.order.task.TaskSeriallyTest - task2 end
+     * 2019-10-27 12:44:56.324 [threadPoolTaskScheduler-4] INFO  c.x.order.task.TaskSeriallyTest - task1 end
+     * 2019-10-27 12:45:01.329 [threadPoolTaskScheduler-2] INFO  c.x.order.task.TaskSeriallyTest - task2 start
+     * 2019-10-27 12:45:01.329 [threadPoolTaskScheduler-1] INFO  c.x.order.task.TaskSeriallyTest - task1 start
+     * 2019-10-27 12:45:02.333 [threadPoolTaskScheduler-2] INFO  c.x.order.task.TaskSeriallyTest - task2 end
+     * 2019-10-27 12:45:02.333 [threadPoolTaskScheduler-1] INFO  c.x.order.task.TaskSeriallyTest - task1 end
+     *
+     * 和上面日志对比,可以很清楚的看到 "threadPoolTaskScheduler-1","threadPoolTaskScheduler-2"等 自定义线程池 @see org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler 中的线程
+     * 说明如果我们配置的定时任务的自定义线程池,当前所有的定时任务都会冲线程池中获取线程 实现并行任务
+     */
 }
