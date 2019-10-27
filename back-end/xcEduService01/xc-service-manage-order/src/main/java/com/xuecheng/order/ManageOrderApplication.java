@@ -9,6 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -19,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 @ComponentScan(basePackages={"com.xuecheng.framework"})//扫描framework中通用类
 @ComponentScan(basePackages={"com.xuecheng.order"})//扫描本项目下的所有类
 @SpringBootApplication
+@EnableScheduling // 开启springtask 任务
 public class ManageOrderApplication {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(ManageOrderApplication.class, args);
