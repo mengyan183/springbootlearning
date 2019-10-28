@@ -21,7 +21,7 @@ import org.apache.servicecomb.provider.rest.common.RestSchema;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RestSchema(schemaId = "hello")
+@RestSchema(schemaId = "hello") // 发布微服务到注册中心
 @RequestMapping(path = "/")
 public class HelloImpl {
 
