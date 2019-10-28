@@ -26,6 +26,7 @@ public class HelloConsumer {
     public void invokeHello() {
         //service url is : cse://serviceName/operation  serviceName 指代的是 service_description:name 设置的名称
         String serviceName = "HelloServiceComb";
+        // 微服务之间调用方式
         restTemplate.getForObject("cse://" + serviceName + "/hello", String.class);
     }
 }
