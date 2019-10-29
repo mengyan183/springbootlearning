@@ -1,0 +1,15 @@
+server:
+  port: 9003
+zuul:
+  routes:
+    shicifang-friend:
+      serviceId: shicifang-friend
+    shicifang-qa:
+      serviceId: shicifang-qa
+discoveryServer:
+  ribbon:
+    eureka:
+      enabled: false
+servicecomb:
+  tracing:
+    enabled: true
