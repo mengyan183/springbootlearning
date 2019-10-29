@@ -4,11 +4,24 @@ service_description:
   version: 0.0.1 # 应用程序版本
   environment: development
 servicecomb:
-  handler:
-    chain:
-      Provider: {} # 服务提供者调用链,默认无需配置
+  circuitBreaker: #熔断
+    Provider:
+      HelloServiceComb:
+        requestVolumeThreshold: 8
+    fallbackpolicy:
+      provider:
+        policy: returnnull
+    flowcontrol: #限流
+      Provider:
+        qps:
+          limit:
+            gateway: 1000
+    handler:
+      chain:
+        Provider:
+          default: qps-flowcontrol-provider,bizkeeper-provider,tracing-provider
   rest: # 通信协议为 rest
-    address: 0.0.0.0:9080 # rest调用端口地址
+    address: 0.0.0.0:9081 # rest调用端口地址
   service:
     registry:
       address: http://127.0.0.1:30100  # 服务注册中心cse地址

@@ -2,6 +2,7 @@ package com.xing.service.iml;
 
 
 import com.xing.service.CombRestService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.servicecomb.provider.rest.common.RestSchema;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  **/
 @RestSchema(schemaId = "CombRestServiceImpl") // 服务契约名称 ,如果服务契约名称修改,需要添加service_description.environment=development,否则服务无法启动
 @RequestMapping("/")
+@Slf4j
 public class CombRestServiceImpl implements CombRestService {
 
     /**
@@ -26,6 +28,7 @@ public class CombRestServiceImpl implements CombRestService {
     @Override
     @GetMapping("/say")
     public String sayRest(String name) {
+        log.info("服务2");
         return "hello " + name;
     }
 }

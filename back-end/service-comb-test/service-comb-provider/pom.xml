@@ -20,6 +20,21 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
+        <!--限流-->
+        <dependency>
+            <groupId>org.apache.servicecomb</groupId>
+            <artifactId>handler-flowcontrol-qps</artifactId>
+        </dependency>
+        <!--熔断-->
+        <dependency>
+            <groupId>org.apache.servicecomb</groupId>
+            <artifactId>handler-bizkeeper</artifactId>
+        </dependency>
+        <!--日志追踪-->
+        <dependency>
+            <groupId>org.apache.servicecomb</groupId>
+            <artifactId>handler-tracing-zipkin</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -38,5 +53,26 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.6</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- zuul proxy 需要的包-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zuul</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-ribbon</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-hystrix</artifactId>
+        </dependency>
+
     </dependencies>
 </project>
