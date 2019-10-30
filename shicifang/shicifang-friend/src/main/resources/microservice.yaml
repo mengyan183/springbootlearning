@@ -6,14 +6,14 @@ servicecomb:
   tracing:
     collector:
       address: http://127.0.0.1:9411
-  circuitBreaker:
+  circuitBreaker: #熔断
     Provider:
       shicifang-friend:
         requestVolumeThreshold: 8
-  fallbackpolicy:
+  fallbackpolicy: #熔断策略
     provider:
       policy: returnnull
-  flowcontrol:
+  flowcontrol: # 限流
     Provider:
       qps:
         limit:

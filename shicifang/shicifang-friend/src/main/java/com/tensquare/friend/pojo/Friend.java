@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="tb_friend")
-@IdClass(Friend.class)
+@IdClass(Friend.class) // 联合主键
 public class Friend implements Serializable{
 
     @Id

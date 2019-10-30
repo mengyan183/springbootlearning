@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class FriendRestRemoteServiceImpl implements FriendService {
-    @Autowired
+
     private  RestTemplate restTemplate = RestTemplateBuilder.create();
 
     @Override
