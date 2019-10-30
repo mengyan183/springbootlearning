@@ -3,7 +3,7 @@ server:
 zuul:
   routes:
     shicifang-friend:
-      serviceId: shicifang-friend
+      serviceId: shicifang-friend # servicecomb 中的 service_description:name
     shicifang-qa:
       serviceId: shicifang-qa
 discoveryServer:

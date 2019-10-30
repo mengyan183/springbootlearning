@@ -1,9 +1,9 @@
 spring:
-  datasource:  
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&amp;characterEncoding=UTF8&useSSL=false
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/shicifang?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Hongkong&allowPublicKeyRetrieval=true
     username: root
-    password: root
+    password: N/mvu*b}C$1!
   jpa: 
     database: MySQL
     show-sql: true

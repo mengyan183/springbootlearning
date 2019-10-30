@@ -11,7 +11,7 @@ import org.springframework.web.filter.CorsFilter;
 
 @SpringBootApplication
 @EnableServiceComb
-@EnableZuulProxy//新增注
+@EnableZuulProxy//新增注解
 public class ZuulSpringBootApplication {
     public static void main(String[] args) {
         SpringApplication.run(ZuulSpringBootApplication.class,args);
