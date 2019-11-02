@@ -12,6 +12,9 @@
         <module>first-dubbo-provider</module>
         <module>first-dubbo-consumer</module>
         <module>elasticsearch-server</module>
+        <module>service-comb-test</module>
+        <module>service-comb-rpc-test</module>
+        <module>test-service-comb-full</module>
     </modules>
 
 

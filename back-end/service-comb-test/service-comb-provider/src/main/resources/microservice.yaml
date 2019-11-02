@@ -1,0 +1,28 @@
+APPLICATION_ID: ServiceCombTestProvider #应用程序id
+service_description:
+  name: ServiceCombTestProvider #应用程序名称
+  version: 0.0.1 # 应用程序版本
+  environment: development
+servicecomb:
+  circuitBreaker: #熔断
+    Provider:
+      HelloServiceComb:
+        requestVolumeThreshold: 8
+    fallbackpolicy:
+      provider:
+        policy: returnnull
+    flowcontrol: #限流
+      Provider:
+        qps:
+          limit:
+            gateway: 1000
+    handler:
+      chain:
+        Provider:
+          default: qps-flowcontrol-provider,bizkeeper-provider,tracing-provider
+  rest: # 通信协议为 rest
+    address: 0.0.0.0:9081 # rest调用端口地址
+  service:
+    registry:
+      address: http://127.0.0.1:30100  # 服务注册中心cse地址
+      autodiscovery: false # 服务是否自动发现,一般只有在请求的时候才去调用

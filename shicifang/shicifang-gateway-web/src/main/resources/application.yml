@@ -1,0 +1,15 @@
+server:
+  port: 9003
+zuul:
+  routes:
+    shicifang-friend:
+      serviceId: shicifang-friend # servicecomb 中的 service_description:name
+    shicifang-qa:
+      serviceId: shicifang-qa
+discoveryServer:
+  ribbon:
+    eureka:
+      enabled: false
+servicecomb:
+  tracing:
+    enabled: true

@@ -1,0 +1,29 @@
+APPLICATION_ID: start.servicecomb.io
+service_description:
+  name: shicifang-qa
+  version: 0.0.2
+servicecomb:
+  tracing:
+    collector:
+      address: http://127.0.0.1:9411
+  circuitBreaker: # 熔断
+    Provider:
+      shicifang-friend: # 服务提供者 id
+        requestVolumeThreshold: 1 #失败结果达到的峰值
+  fallbackpolicy:
+    provider:
+      policy: returnnull # 熔断发生时 处理策略
+  flowcontrol:
+    Provider:
+      qps:
+        limit:
+          gateway: 1  #属性名称为gateway模块中的 service_description:name ,达到限流效果是由于调用链配置下面qps-flowcontrol-provider
+  handler:
+    chain:
+      Provider:
+        default: qps-flowcontrol-provider,bizkeeper-provider,tracing-provider
+  rest:
+    address: 0.0.0.0:9083
+  service:
+    registry:
+      address: http://127.0.0.1:30100

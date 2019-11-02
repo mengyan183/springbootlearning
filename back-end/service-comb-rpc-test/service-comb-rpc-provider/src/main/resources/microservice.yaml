@@ -1,0 +1,17 @@
+APPLICATION_ID: ServiceCombRpc #应用程序id
+service_description:
+  name: ServiceCombRpcProvider #应用程序名称
+  version: 0.0.1 # 应用程序版本
+  environment: development
+  properties:
+    allowCrossApp: true
+servicecomb:
+  handler:
+    chain:
+      Provider: {} # 服务提供者调用链,默认无需配置
+  highway: # 通信协议为 rpc
+    address: 0.0.0.0:9090 # rest调用端口地址
+  service:
+    registry:
+      address: http://127.0.0.1:30100  # 服务注册中心cse地址
+      autodiscovery: false # 服务是否自动发现,一般只有在请求的时候才去调用
