@@ -1,0 +1,10 @@
+APPLICATION_ID: helloworldproject
+service_description:
+  name: helloworld-consumer
+  version: 1.0.0
+servicecomb:
+  rest:
+    address: 0.0.0.0:8081
+  service:
+    registry:
+      address: http://127.0.0.1:30100
