@@ -36,14 +36,28 @@
         <lombok.version>1.16.16</lombok.version>
         <mysql-connector-java.version>5.1.40</mysql-connector-java.version>
         <servicecomb.java-chassis.version>1.0.0-m2</servicecomb.java-chassis.version>
+        <fastjson.version>1.2.60</fastjson.version>
+        <cse.version>2.3.73</cse.version>
     </properties>
+    <repositories>
+        <repository>
+            <id>HuaweiCloudSDK</id>
+            <url>https://repo.huaweicloud.com/repository/maven/huaweicloudsdk/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
     <!--test-->
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.apache.servicecomb</groupId>
-                <artifactId>java-chassis-dependencies</artifactId>
-                <version>${servicecomb.java-chassis.version}</version>
+                <groupId>com.huawei.paas.cse</groupId>
+                <artifactId>cse-dependency</artifactId>
+                <version>${cse.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
