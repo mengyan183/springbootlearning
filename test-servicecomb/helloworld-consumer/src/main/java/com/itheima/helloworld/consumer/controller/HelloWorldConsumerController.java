@@ -18,7 +18,7 @@ public class HelloWorldConsumerController   {
 
     //基于rpc的方式调用远程rest接口
     @RpcReference(microserviceName="helloworld-provider",schemaId = "helloworld")
-    HelloWorldInterface helloWorldInterface;
+    private HelloWorldInterface helloWorldInterface;
 
     @GetMapping(path = "request")
     public Student request(String name){
