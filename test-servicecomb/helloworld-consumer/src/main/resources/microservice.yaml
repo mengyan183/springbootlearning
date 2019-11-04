@@ -2,9 +2,21 @@ APPLICATION_ID: helloworldproject
 service_description:
   name: helloworld-consumer
   version: 1.0.0
-servicecomb:
-  rest:
-    address: 0.0.0.0:8081
+#servicecomb:
+#  rest:
+#    address: 0.0.0.0:8081
+#  service:
+#    registry:
+#      address: http://127.0.0.1:30100
+cse: #接入华为云cse
   service:
     registry:
-      address: http://127.0.0.1:30100
+      address: https://cse.cn-north-1.myhuaweicloud.com #注册中心地址
+      instance:
+        watch: false
+  credentials:
+    accessKey: ${ACCESSKEY:1}  # 公钥
+    secretKey: ${SECRETKEY:1} # 密钥
+    akskCustomCipher: default
+  rest:
+    address: 0.0.0.0:8081
