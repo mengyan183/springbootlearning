@@ -15,6 +15,7 @@
             <groupId>org.apache.servicecomb</groupId>
             <artifactId>spring-boot-starter-provider</artifactId>
         </dependency>
+        <!--https://huaweicse.github.io/cse-java-chassis-doc/using-cse-in-spring-boot/java-application.html-->
         <dependency>
             <groupId>com.huawei.paas.cse</groupId>
             <artifactId>cse-solution-service-engine</artifactId>
