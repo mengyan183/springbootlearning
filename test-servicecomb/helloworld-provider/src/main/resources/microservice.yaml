@@ -2,6 +2,7 @@ APPLICATION_ID: helloworldproject
 service_description:
   name: helloworld-provider
   version: 1.0.0
+  environment: development
 #servicecomb:
 #  rest:
 #    address: 0.0.0.0:8080
@@ -15,8 +16,8 @@ cse: #接入华为云cse
       instance:
         watch: false
   credentials:
-    accessKey:  # 公钥
-    secretKey:  # 密钥
+    accessKey: ${ACCESSKEY:1}  # 公钥
+    secretKey: ${SECRETKEY:1} # 密钥
     akskCustomCipher: default
   rest:
     address: 0.0.0.0:8080
