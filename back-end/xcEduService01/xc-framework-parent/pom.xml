@@ -20,7 +20,7 @@
         <module>../test-freemarker</module>
         <module>../test-rabbitmq-producer</module>
         <module>../test-rabbitmq-consumer</module>
-        <module>../xc‐service‐manage‐cms‐client</module>
+        <module>../xc-service-manage-cms-client</module>
         <module>../xc-service-manage-course</module>
         <module>../xc-service-base-filesystem</module>
         <module>../xc-govern-center</module>
@@ -32,6 +32,7 @@
         <module>../xc-service-ucenter</module>
         <module>../xc-govern-gateway</module>
         <module>../xc-service-manage-order</module>
+        <module>../xc-service-portalview</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
