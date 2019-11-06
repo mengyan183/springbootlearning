@@ -58,7 +58,7 @@
         <guava.version>24.0-jre</guava.version>
         <okhttp.version>3.9.1</okhttp.version>
         <commonsio.version>1.3.2</commonsio.version>
-        <cse.version>2.3.25</cse.version>
+        <cse.version>2.3.73</cse.version>
     </properties>
     <repositories>
         <repository>
@@ -81,17 +81,17 @@
                 <artifactId>guava</artifactId>
                 <version>28.1-jre</version>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.cloud</groupId>-->
-<!--                <artifactId>spring-cloud-dependencies</artifactId>-->
-<!--                <version>Finchley.SR1</version>-->
-<!--                <type>pom</type>-->
-<!--                <scope>import</scope>-->
-<!--            </dependency>-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Greenwich.SR3</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!--引入servicecomb-->
             <dependency>
                 <groupId>com.huawei.paas.cse</groupId>
-                <artifactId>cse-dependency</artifactId>
+                <artifactId>cse-dependency-spring-boot2</artifactId>
                 <version>${cse.version}</version>
                 <type>pom</type>
                 <scope>import</scope>

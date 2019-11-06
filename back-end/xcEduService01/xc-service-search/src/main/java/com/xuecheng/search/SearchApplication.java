@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @author Administrator
  * @version 1.0
  **/
-@SpringBootApplication
+@SpringBootApplication()
 @EntityScan("com.xuecheng.framework.domain.search")//扫描实体类
 @ComponentScan(basePackages = {"com.xuecheng.api"})//扫描接口
 @ComponentScan(basePackages = {"com.xuecheng.search"})//扫描本项目下的所有类
