@@ -14,5 +14,9 @@ xuecheng:
   course_media:
     index: xc_course_media
     source_field: courseid,media_id,media_url,teachplan_id,media_fileoriginalname
-logging:
-  config: ./logback-spring.xml
+cse:
+  credentials:
+    accessKey: "WRKMRWMUDSG9BMUROFOA"  # 公钥
+    secretKey: "imHlmjWxjkTdNCFZxAhOaEB86aqeMQEgfRGpivPM" # 密钥
+    akskCustomCipher: default
+    project: cn-north-1
