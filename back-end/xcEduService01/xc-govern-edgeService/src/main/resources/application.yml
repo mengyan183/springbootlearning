@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: xc-edu-edgeService
+server:
+  port: 50201
+
+# 应用名称
+APPLICATION_ID: xc-edu-cloud1.0
+# 微服务名称和版本号
+service_description:
+  name: ${spring.application.name}
+  version: 1.0.0
+# 服务中心和配置中心的地址
+cse:
+  service:
+    registry:
+      address: https://cse.cn-north-1.myhuaweicloud.com
+      instance:
+        watch: false
+  config:
+    client:
+      serverUri: https://cse.cn-north-1.myhuaweicloud.com
+      refreshMode: 1
+      refresh_interval: 15000
+# 对外发布的地址，端口号使用server.port
+  rest:
+    address: 0.0.0.0:${server.port}
+# AK/SK认证信息，需要修改为自己的AK/SK
+  credentials:
+    accessKey: "WRKMRWMUDSG9BMUROFOA"  # 公钥
+    secretKey: "imHlmjWxjkTdNCFZxAhOaEB86aqeMQEgfRGpivPM" # 密钥
+    akskCustomCipher: default
+# 路由配置
+  http:
+    dispatcher:
+      edge:
+        default:
+          enabled: true
+          prefix: api  #请求url的前缀
+          withVersion: false
+          prefixSegmentCount: 2
+        url:
+          enabled: true
+          mappings:
+            xc-service-search: #自定义转发规则名称
+              prefixSegmentCount: 2 #请求url前缀数量
+              path: "/openapi/search/.*" #匹配拦截转发url
+              withVersion: false # 是否要求版本号
+              microserviceName: xc-service-search # 微服务工程名称
+  #            versionRule: 1.0.0-2.0.0 # 限制mapping版本规则
+            xc-service-portalview:
+              prefixSegmentCount: 2
+              path: "/openapi/portalview/.*"
+              withVersion: false
+              microserviceName: xc-service-portalview
+  #            versionRule: 1.0.0-2.0.0
