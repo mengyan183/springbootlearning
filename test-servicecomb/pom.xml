@@ -36,7 +36,7 @@
         <lombok.version>1.16.16</lombok.version>
         <mysql-connector-java.version>5.1.40</mysql-connector-java.version>
         <servicecomb.java-chassis.version>1.0.0-m2</servicecomb.java-chassis.version>
-        <fastjson.version>1.2.60</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <cse.version>2.3.25</cse.version>
     </properties>
     <repositories>
